@@ -1,4 +1,4 @@
-import React, { ReactElement, useMemo, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import GoogleFontLoader from "react-google-font-loader";
 import dayjs from "dayjs";
 import { BetRoundStats, BetOverlay } from "@streamdota/shared-types";
