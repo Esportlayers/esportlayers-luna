@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import dynamic from "next/dynamic";
-import Frame from "../../components/betting/Slider/Frame";
+import SliderFrame from "../../components/betting/Slider/SliderFrame";
 
 const BetContext = dynamic(
     () => import('../../components/betting/Context'),
@@ -9,7 +9,7 @@ const BetContext = dynamic(
 
 function Slider({auth, testing}: {auth: string; testing: boolean}): ReactElement {
     return <BetContext auth={auth}>
-        <Frame auth={auth} testing={testing} />
+        <SliderFrame auth={auth} testing={testing} />
     </BetContext>;
 }
 

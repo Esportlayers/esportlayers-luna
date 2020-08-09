@@ -1,8 +1,8 @@
-import React, { ReactElement, useState, useMemo } from "react";
+import React, { ReactElement, useMemo } from "react";
 import GoogleFontLoader from "react-google-font-loader";
 import { useBetStateValue } from "../Context";
 import { useAbortFetch } from "../../../hooks/abortFetch";
-import { fetchOverlay } from "../Timer/Frame";
+import { fetchOverlay } from "../Timer/TimerFrame";
 import DistributionSlider from "./DistributionSlider";
 
 interface Props {

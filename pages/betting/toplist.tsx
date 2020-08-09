@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import dynamic from "next/dynamic";
-import Frame from "../../components/betting/Toplist/Frame";
+import ToplistFrame from "../../components/betting/Toplist/ToplistFrame";
 
 const BetContext = dynamic(
     () => import('../../components/betting/Context'),
@@ -9,7 +9,7 @@ const BetContext = dynamic(
 
 function Toplist({auth}: {auth: string}): ReactElement {
     return <BetContext auth={auth}>
-        <Frame auth={auth} />
+        <ToplistFrame auth={auth} />
     </BetContext>;
 }
 

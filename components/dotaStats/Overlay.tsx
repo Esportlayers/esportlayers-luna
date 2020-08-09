@@ -4,7 +4,7 @@ import { useMessageListener } from "../websocket/MessageHandler";
 import { get } from "../../modules/Network";
 import { useAbortFetch } from "../../hooks/abortFetch";
 import { MessageType } from "../websocket/state";
-import Frame from "./Frame";
+import DotaOverlayFrame from "./DotaOverlayFrame";
 
 
 export async function fetchStats(abortController: AbortController, apiKey: string): Promise<DotaStatsEntitiy[]> {
@@ -42,5 +42,5 @@ export default function Overlay({frameKey}: {frameKey: string}): ReactElement {
         }
     }, [message])
 
-    return <Frame wins={wins} loss={lost} auth={frameKey} />;
+    return <DotaOverlayFrame wins={wins} loss={lost} auth={frameKey} />;
 }

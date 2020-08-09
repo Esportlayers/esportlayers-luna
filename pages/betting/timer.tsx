@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import dynamic from "next/dynamic";
-import Frame from "../../components/betting/Timer/Frame";
+import TimerFrame from "../../components/betting/Timer/TimerFrame";
 
 const BetContext = dynamic(
     () => import('../../components/betting/Context'),
@@ -9,7 +9,7 @@ const BetContext = dynamic(
 
 function Timer({auth, testing}: {auth: string; testing: boolean}): ReactElement {
     return <BetContext auth={auth}>
-        <Frame auth={auth} testing={testing}/>
+        <TimerFrame auth={auth} testing={testing}/>
     </BetContext>;
 }
 

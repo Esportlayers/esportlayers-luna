@@ -26,13 +26,13 @@ function Number({color, x, y, height, cfg, children}: {color: string, x: number,
     }}>{children}</div>
 }
 
-export async function fetchOverlay(abortController: AbortController, key: string): Promise<OverlayConfig> {
+export async function fetchDotaOverlay(abortController: AbortController, key: string): Promise<OverlayConfig> {
     return await get<OverlayConfig>('/overlay?frameApiKey=' + key, 'json', {signal: abortController.signal});
 }
 
 
-export default function Frame({wins, loss, auth}: {wins: number; loss: number; auth: string}): ReactElement | null  {
-    const [cfg] = useAbortFetch(fetchOverlay, auth);
+export default function DotaOverlayFrame({wins, loss, auth}: {wins: number; loss: number; auth: string}): ReactElement | null  {
+    const [cfg] = useAbortFetch(fetchDotaOverlay, auth);
 
     if(cfg) {
         return <>

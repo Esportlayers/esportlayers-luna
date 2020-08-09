@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import { BetSeasonToplist } from "@streamdota/shared-types";
 import { useAbortFetch } from "../../../hooks/abortFetch";
 import { get } from "../../../modules/Network";
-import { fetchOverlay } from "../Timer/Frame";
+import { fetchOverlay } from "../Timer/TimerFrame";
 import Toplist from "./Toplist";
 import GoogleFontLoader from "react-google-font-loader";
 
