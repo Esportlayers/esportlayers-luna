@@ -5,7 +5,6 @@ import { get } from "../../../modules/Network";
 import { fetchOverlay } from "../Timer/TimerFrame";
 import Toplist from "./Toplist";
 import GoogleFontLoader from "react-google-font-loader";
-import { useMessageListener } from "../../websocket/MessageHandler";
 import { useBetStateValue } from "../Context";
 
 interface Props {
@@ -21,11 +20,9 @@ export default React.memo(function Overlay({auth, season}: Props): ReactElement 
     const [overlay] = useAbortFetch(fetchOverlay, auth);
     const [toplist, reload] = useAbortFetch(fetchToplist, auth, season);
     const [{betRound}] = useBetStateValue();
-    const [status, setStatus] = useState('');
-    useEffect(() => setStatus(betRound?.status || ''), [betRound]);
     useEffect(() => {
         reload();
-    }, [status]);
+    }, [betRound]);
 
     if(overlay && toplist) {
         return <>
