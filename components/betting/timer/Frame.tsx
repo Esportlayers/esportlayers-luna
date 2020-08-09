@@ -9,6 +9,7 @@ import { get } from "../../../modules/Network";
 
 interface Props {
     auth: string;
+    testing: boolean;
 }
 
 function calculateRemaining(currentBetRound: BetRoundStats): string {
@@ -31,25 +32,35 @@ export async function fetchOverlay(abortController: AbortController, key: string
     return await get<BetOverlay>('/betsOverlay?frameApiKey=' + key, 'json', {signal: abortController.signal});
 }
 
-export default React.memo(function Frame({auth}: Props): ReactElement | null {
+export default React.memo(function Frame({auth, testing}: Props): ReactElement | null {
     const [overlay] = useAbortFetch(fetchOverlay, auth);
     const [{betRound}] = useBetStateValue();
     const [timer, setTimer] = useState(calculateRemaining(betRound));
     useInterval(() => setTimer(calculateRemaining(betRound)));
 
-    if(overlay && betRound.status === 'betting') {
+    if(overlay && (betRound.status === 'betting' || testing)) {
         return <div className={'wrapper'}>
             {overlay.fontFamily && <GoogleFontLoader fonts={[{font: overlay.fontFamily, weights: [overlay.fontVariant]}]} />}
     
             <div className={'counter'}>{timer}</div>
     
+            <style jsx global>{`
+                body, html {
+                    margin: 0;
+                    padding: 0;
+                }
+            `}</style>
             <style jsx>{`
                 .wrapper {
                     background-color: ${overlay.timerBackground};
                     font-size: ${overlay.timerFontSize}px;
-                    padding: .5em .75em;
+                    height: 100vh;
+                    width: 100vw;
                     line-height: 1em;
-                    display: inline-block;
+                    text-align: center;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
     
                 .counter {

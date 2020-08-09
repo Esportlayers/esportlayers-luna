@@ -7,8 +7,6 @@ interface Props {
 export default React.memo(function Frame({auth}: Props): ReactElement | null {
     const [{betRound}] = useBetStateValue();
 
-    console.log(betRound);
-
     if(betRound && betRound.betSeason !== 0) {
         return <Overlay season={betRound.betSeason} auth={auth}/>;
     }

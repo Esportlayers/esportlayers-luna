@@ -44,6 +44,12 @@ export default function Frame({wins, loss, auth}: {wins: number; loss: number; a
                     <Number color={cfg.lossColor} cfg={cfg} x={cfg.lossX} y={cfg.lossY} height={'.9em'}>{loss}</Number>
                 </div>
             </div>
+            <style jsx global>{`
+                body, html {
+                    margin: 0;
+                    padding: 0;
+                }
+            `}</style>
             <style jsx>{`
                 .positionFrame {
                     width: 160px;
