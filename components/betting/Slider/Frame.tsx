@@ -7,9 +7,10 @@ import DistributionSlider from "./DistributionSlider";
 
 interface Props {
     auth: string;
+    testing: boolean;
 }
 
-export default React.memo(function Frame({auth}: Props): ReactElement | null {
+export default React.memo(function Frame({auth, testing}: Props): ReactElement | null {
     const [overlay] = useAbortFetch(fetchOverlay, auth);
     const [{betRound}] = useBetStateValue();
 
@@ -23,7 +24,7 @@ export default React.memo(function Frame({auth}: Props): ReactElement | null {
         return (aBets * 100) / total;
     }, [betRound]);
 
-    if(overlay && betRound.status === 'betting') {
+    if(overlay && (betRound.status === 'betting' || testing)) {
         return <>
             {overlay.fontFamily && <GoogleFontLoader fonts={[{font: overlay.fontFamily, weights: [overlay.fontVariant]}]} />}
             <DistributionSlider overlay={overlay} distribution={distribution} />

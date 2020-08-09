@@ -7,14 +7,14 @@ const BetContext = dynamic(
     { ssr: false }
 );
 
-function Slider({auth}: {auth: string}): ReactElement {
+function Slider({auth, testing}: {auth: string; testing: boolean}): ReactElement {
     return <BetContext auth={auth}>
-        <Frame auth={auth} />
+        <Frame auth={auth} testing={testing} />
     </BetContext>;
 }
 
-Slider.getInitialProps = ({query: {auth}}) => {
-    return {auth};
+Slider.getInitialProps = ({query: {auth, testing}}) => {
+    return {auth, testing: Boolean(testing)};
 }
 
 export default Slider;
