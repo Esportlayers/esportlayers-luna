@@ -29,6 +29,7 @@ export default React.memo(function Toplist({list, overlay}: Props): ReactElement
                 background-color: ${overlay.toplistBackground};
                 color: ${overlay.toplistFont};
                 font-size: ${overlay.toplistFontSize}px;
+                font-family: ${overlay.fontFamily};
                 padding: .5em;
                 line-height: 1em;
                 display: grid;
