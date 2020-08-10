@@ -1,10 +1,11 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState, useEffect } from "react";
 import { BetSeasonToplist } from "@streamdota/shared-types";
 import { useAbortFetch } from "../../../hooks/abortFetch";
 import { get } from "../../../modules/Network";
 import { fetchOverlay } from "../Timer/TimerFrame";
 import Toplist from "./Toplist";
 import GoogleFontLoader from "react-google-font-loader";
+import { useBetStateValue } from "../Context";
 
 interface Props {
     auth: string;
@@ -17,7 +18,11 @@ export async function fetchToplist(abortController: AbortController, key: string
 
 export default React.memo(function Overlay({auth, season}: Props): ReactElement | null {
     const [overlay] = useAbortFetch(fetchOverlay, auth);
-    const [toplist] = useAbortFetch(fetchToplist, auth, season);
+    const [toplist, reload] = useAbortFetch(fetchToplist, auth, season);
+    const [{betRound}] = useBetStateValue();
+    useEffect(() => {
+        reload();
+    }, [betRound]);
 
     if(overlay && toplist) {
         return <>
