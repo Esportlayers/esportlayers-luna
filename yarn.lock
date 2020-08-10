@@ -1033,10 +1033,10 @@
   resolved "https://registry.yarnpkg.com/@next/react-refresh-utils/-/react-refresh-utils-9.5.1.tgz#fe257fafe1a7f1c0c6e818017fa65b5ee45c5eca"
   integrity sha512-A19z/E6f08RXfBRc2STQ+5qo7iSPif7mNcww9dZAVli3Idu4umGP5dbpL71Hz1vyRs1eMUEylXTpXsY2WzY07g==
 
-"@streamdota/shared-types@^1.0.18":
-  version "1.0.18"
-  resolved "https://registry.yarnpkg.com/@streamdota/shared-types/-/shared-types-1.0.18.tgz#1f8cfcfbc49d302be613f960cb1812128377c474"
-  integrity sha512-o67T7IEtX/jiNOkhDXQ2kpAjyLhfECENBfrMz3NTS5gTcupbTtVaYdQ7b+i4F5i/jhy3f7+QfeAYpOCq9vPG+w==
+"@streamdota/shared-types@1.0.19":
+  version "1.0.19"
+  resolved "https://registry.yarnpkg.com/@streamdota/shared-types/-/shared-types-1.0.19.tgz#5e91a2cf82957cf062267ab3673828774763eafa"
+  integrity sha512-55tDa3g1bIa9+G96bTREFBVrDFqYdk4oOT5VJDy3VXk2LXGU2fHFrnfzC/8Y7HTaRAlyUSdC8qepTExiZBtY2w==
 
 "@types/color-name@^1.1.1":
   version "1.1.1"

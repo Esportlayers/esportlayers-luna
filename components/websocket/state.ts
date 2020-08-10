@@ -8,6 +8,7 @@ enum ACTIONS {
 export enum MessageType {
     chat = 'chat',
     gamestate = 'gamestate',
+    connected = 'connected',
     winner = 'winner',
     betting = 'betting',
 }
@@ -37,8 +38,13 @@ export interface BettingMessage {
     date: number;
     value: BetRoundStats;
 }
+export interface ConnectedMessage {
+    type: MessageType.connected;
+    date: number;
+    value: boolean;
+}
 
-export type Message =  GameStateMessage | WinnerMessage | ChatMessage | BettingMessage;
+export type Message =  GameStateMessage | WinnerMessage | ChatMessage | BettingMessage | ConnectedMessage;
 
 interface NewMessageAction {
     type: typeof ACTIONS.NEW_MESSAGE;
