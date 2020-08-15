@@ -13,9 +13,14 @@ const Overlay = dynamic(
     { ssr: false }
 );
 
-function RoshanTimer({auth}: {auth: string}): ReactElement {
+interface Props {
+    auth: string;
+    testing: boolean;
+}
+
+function RoshanTimer({auth, testing}: Props): ReactElement {
     return <ContextProvider initialState={initialState} reducer={reducer} url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
-        <Overlay />
+        <Overlay testing={testing}/>
 
         <style global jsx>{`
             html, body {
@@ -26,8 +31,8 @@ function RoshanTimer({auth}: {auth: string}): ReactElement {
     </ContextProvider>;
 }
 
-RoshanTimer.getInitialProps = ({query: {auth}}) => {
-    return {auth};
+RoshanTimer.getInitialProps = ({query: {auth, testing}}) => {
+    return {auth, testing};
 }
 
 export default RoshanTimer;
