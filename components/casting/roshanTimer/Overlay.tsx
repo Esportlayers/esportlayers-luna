@@ -4,7 +4,7 @@ import { isRoshanMessage } from "../../websocket/state";
 import { useInterval } from "../../../hooks/interval";
 import Timer from "./Timer";
 
-export default function Overlay(): ReactElement | null {
+export default function Overlay({testing}: {testing: boolean}): ReactElement | null {
     const message = useMessageListener();
     const [remaining, setRemaining] = useState(0);
 
@@ -16,7 +16,7 @@ export default function Overlay(): ReactElement | null {
 
     useInterval(() => remaining > 0 && setRemaining(remaining - 1));
 
-    if(remaining > 0) {
+    if(remaining > 0 || testing) {
         return <Timer remaining={remaining} />;
     }
     return null;
