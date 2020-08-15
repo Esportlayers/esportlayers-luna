@@ -11,40 +11,49 @@ export enum MessageType {
     connected = 'connected',
     winner = 'winner',
     betting = 'betting',
+    roshan = 'roshan',
 }
 
-export interface GameStateMessage {
-    type: MessageType.gamestate;
+export interface BaseMessage {
+    type: MessageType;
     date: number;
+}
+
+export interface GameStateMessage extends BaseMessage {
+    type: MessageType.gamestate;
     value: string;  
 };
 
-export interface WinnerMessage {
+export interface WinnerMessage extends BaseMessage {
     type: MessageType.winner;
-    date: number;
     value: boolean;
 }
 
-export interface ChatMessage {
+export interface ChatMessage extends BaseMessage  {
     type: MessageType.chat;
-    date: number;
     value: {
         user: string;
         message: string;
     };
 }
-export interface BettingMessage {
+export interface BettingMessage extends BaseMessage {
     type: MessageType.betting;
-    date: number;
     value: BetRoundStats;
 }
-export interface ConnectedMessage {
+export interface ConnectedMessage extends BaseMessage {
     type: MessageType.connected;
-    date: number;
     value: boolean;
 }
+export interface RoshanMessage extends BaseMessage {
+    type: MessageType.roshan;
+    value: number;
+}
 
-export type Message =  GameStateMessage | WinnerMessage | ChatMessage | BettingMessage | ConnectedMessage;
+export type Message =  GameStateMessage | WinnerMessage | ChatMessage | BettingMessage | ConnectedMessage | RoshanMessage;
+
+export function isRoshanMessage(msg: Message): msg is RoshanMessage {
+    return msg.type === MessageType.roshan;
+}
 
 interface NewMessageAction {
     type: typeof ACTIONS.NEW_MESSAGE;
