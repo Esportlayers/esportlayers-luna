@@ -46,7 +46,10 @@ export interface ConnectedMessage extends BaseMessage {
 }
 export interface RoshanMessage extends BaseMessage {
     type: MessageType.roshan;
-    value: number;
+    value: {
+        state: 'alive' | 'respawn_base' | 'respawn_variable';
+        remaining: number;
+    };
 }
 
 export type Message =  GameStateMessage | WinnerMessage | ChatMessage | BettingMessage | ConnectedMessage | RoshanMessage;

@@ -10,7 +10,7 @@ export default function Overlay({testing}: {testing: boolean}): ReactElement | n
 
     useEffect(() => {
         if(message && isRoshanMessage(message)) {
-            setRemaining(message.value);
+            setRemaining(message.value.remaining);
         }
     }, [message]);
 

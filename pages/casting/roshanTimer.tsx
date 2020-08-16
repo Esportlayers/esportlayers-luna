@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import dynamic from "next/dynamic";
-import { initialState, reducer } from "../../components/betting/State";
 import getWebsocketUrl from "../../modules/Router";
+import { initialState, reducer } from "../../components/websocket/state";
 
 const ContextProvider = dynamic(
     () => import('../../components/websocket/context'),
