@@ -12,8 +12,6 @@ interface Props {
     state: 'alive' | 'respawn_base' | 'respawn_variable';
 }
 
-
-
 export async function fetchRoshOverlay(abortController: AbortController, key: string): Promise<RoshOverlay> {
     return await get<RoshOverlay>('/roshTimer?frameApiKey=' + key, 'json', {signal: abortController.signal});
 }
@@ -26,7 +24,7 @@ export default function Timer({auth, remaining, state}: Props): ReactElement | n
     seconds = seconds > 10 ? seconds : '0' + seconds;
 
     if(cfg) {
-        return <div className={classNames('wrapper', {state})}>
+        return <div className={classNames('wrapper', state)}>
             {cfg.font && cfg.font !== 'Arial' && <GoogleFontLoader fonts={[{font: cfg.font, weights: [cfg.variant]}]} />}
             <div className={'timer'}>
                 {minutes}:{seconds}
