@@ -4,20 +4,22 @@ import { isRoshanMessage } from "../../websocket/state";
 import { useInterval } from "../../../hooks/interval";
 import Timer from "./Timer";
 
-export default function Overlay({testing}: {testing: boolean}): ReactElement | null {
+export default function Overlay({testing, auth}: {testing: boolean; auth: string}): ReactElement | null {
     const message = useMessageListener();
     const [remaining, setRemaining] = useState(0);
+    const [state, setState] = useState<'alive' | 'respawn_base' | 'respawn_variable'>('alive');
 
     useEffect(() => {
         if(message && isRoshanMessage(message)) {
             setRemaining(message.value.remaining);
+            setState(message.value.state);
         }
     }, [message]);
 
     useInterval(() => remaining > 0 && setRemaining(remaining - 1));
 
-    if(remaining > 0 || testing) {
-        return <Timer remaining={remaining} />;
+    if(state !== 'alive' || testing) {
+        return <Timer remaining={remaining} state={state} auth={auth} />;
     }
     return null;
 }

@@ -20,7 +20,7 @@ interface Props {
 
 function RoshanTimer({auth, testing}: Props): ReactElement {
     return <ContextProvider initialState={initialState} reducer={reducer} url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
-        <Overlay testing={testing}/>
+        <Overlay testing={testing} auth={auth}/>
 
         <style global jsx>{`
             html, body {
