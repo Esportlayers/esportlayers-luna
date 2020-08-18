@@ -18,50 +18,55 @@ export async function fetchRoshOverlay(abortController: AbortController, key: st
     return await get<RoshOverlay>('/roshTimer?frameApiKey=' + key, 'json', {signal: abortController.signal});
 }
 
-export default function Timer({auth, remaining, state}: Props): ReactElement {
+export default function Timer({auth, remaining, state}: Props): ReactElement | null {
     const [cfg] = useAbortFetch(fetchRoshOverlay, auth);
 
     const minutes = Math.floor(remaining / 60);
     let seconds: number | string = remaining % 60;
     seconds = seconds > 10 ? seconds : '0' + seconds;
 
-    return <div className={classNames('timer', {state})}>
-        {cfg.font && cfg.font !== 'Arial' && <GoogleFontLoader fonts={[{font: cfg.font, weights: [cfg.variant]}]} />}
-        {minutes}:{seconds}
+    if(cfg) {
+        return <div className={classNames('wrapper', {state})}>
+            {cfg.font && cfg.font !== 'Arial' && <GoogleFontLoader fonts={[{font: cfg.font, weights: [cfg.variant]}]} />}
+            <div className={'timer'}>
+                {minutes}:{seconds}
+            </div>
 
-        <style jsx global>{`
-            body, html {
-                margin: 0;
-                padding: 0;
-            }
-        `}</style>
+            <style jsx global>{`
+                body, html {
+                    margin: 0;
+                    padding: 0;
+                }
+            `}</style>
 
-        <style jsx>{`
-            .timer {
-                height: 100vh;
-                width: 100vw;
-                line-height: 1em;
-                text-align: center;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-family: 'Arial';
-                color: #FFF;
-                background-image: url('/images/rosh_timer_bg.png');
-                background-repeat: no-repeat;
-                background-size: cover;
-                font-family: ${cfg.font};
-                font-size: ${cfg.fontSize}px;
-                color: #FFF;
-            }
+            <style jsx>{`
+                .wrapper {
+                    height: 1080px;
+                    width: 1920px;
+                    background-image: url('/images/roshtimer_1080p.png');
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    position: relative;
+                    font-family: ${cfg.font}, Arial;
+                    font-size: ${cfg.fontSize}px;
+                    color: ${cfg.baseColor};
+                }
 
-            .respawn_base {
-                color: ${cfg.baseColor};
-            }
+                .timer {
+                    position: absolute;
+                    width: 63px;
+                    height: 30px;
+                    right: 1618px;
+                    bottom: 167px;
+                    line-height: 30px;
+                    text-align: center;
+                }
+                .respawn_variable {
+                    color: ${cfg.variableColor};
+                }
+            `}</style>
+        </div>;
+    }
 
-            .respawn_variable {
-                color: ${cfg.variableColor};
-            }
-        `}</style>
-    </div>;
+    return null;
 }
