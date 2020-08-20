@@ -18,7 +18,7 @@ export default function Overlay({testing, auth}: {testing: boolean; auth: string
 
     useInterval(() => remaining > 0 && setRemaining(remaining - 1));
 
-    if((state !== 'alive' && remaining > 0) || testing) {
+    if(remaining > 0 || testing) {
         return <Timer remaining={remaining} state={state} auth={auth} />;
     }
     return null;
