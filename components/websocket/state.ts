@@ -58,6 +58,10 @@ export function isRoshanMessage(msg: Message): msg is RoshanMessage {
     return msg.type === MessageType.roshan;
 }
 
+export function isWinnerMessage(msg: Message): msg is WinnerMessage {
+    return msg.type === MessageType.winner;
+}
+
 interface NewMessageAction {
     type: typeof ACTIONS.NEW_MESSAGE;
     message: Message;

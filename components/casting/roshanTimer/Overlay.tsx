@@ -1,6 +1,6 @@
 import { ReactElement, useState, useEffect } from "react";
 import { useMessageListener } from "../../websocket/MessageHandler";
-import { isRoshanMessage } from "../../websocket/state";
+import { isRoshanMessage, isWinnerMessage } from "../../websocket/state";
 import { useInterval } from "../../../hooks/interval";
 import Timer from "./Timer";
 
@@ -13,6 +13,8 @@ export default function Overlay({testing, auth}: {testing: boolean; auth: string
         if(message && isRoshanMessage(message)) {
             setRemaining(message.value.remaining);
             setState(message.value.state);
+        } else if (message && isWinnerMessage(message)) {
+            setRemaining(0);
         }
     }, [message]);
 
