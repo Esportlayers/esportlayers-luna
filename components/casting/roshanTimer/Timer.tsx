@@ -21,7 +21,7 @@ export default function Timer({auth, remaining, state}: Props): ReactElement | n
 
     const minutes = Math.floor(remaining / 60);
     let seconds: number | string = remaining % 60;
-    seconds = seconds > 10 ? seconds : '0' + seconds;
+    seconds = seconds >= 10 ? seconds : '0' + seconds;
 
     if(cfg) {
         return <div className={classNames('wrapper', state)}>
