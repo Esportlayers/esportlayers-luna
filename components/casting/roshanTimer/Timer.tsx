@@ -9,7 +9,7 @@ import GoogleFontLoader from 'react-google-font-loader';
 interface Props {
     remaining: number;
     auth: string;
-    state: 'alive' | 'respawn_base' | 'respawn_variable';
+    state: 'alive' | 'respawn_base' | 'respawn_variable' | 'aegis';
 }
 
 export async function fetchRoshOverlay(abortController: AbortController, key: string): Promise<RoshOverlay> {
@@ -19,8 +19,9 @@ export async function fetchRoshOverlay(abortController: AbortController, key: st
 export default function Timer({auth, remaining, state}: Props): ReactElement | null {
     const [cfg] = useAbortFetch(fetchRoshOverlay, auth);
 
-    const minutes = Math.floor(remaining / 60);
-    let seconds: number | string = remaining % 60;
+    const timeLeft = state === 'aegis' ? (remaining - 180) : remaining;
+    const minutes = Math.floor(timeLeft / 60);
+    let seconds: number | string = timeLeft % 60;
     seconds = seconds >= 10 ? seconds : '0' + seconds;
 
     if(cfg) {
@@ -61,6 +62,10 @@ export default function Timer({auth, remaining, state}: Props): ReactElement | n
                 }
                 .respawn_variable {
                     color: ${cfg.variableColor};
+                }
+
+                .aegis {
+                    color: ${cfg.aegisColor};
                 }
             `}</style>
         </div>;

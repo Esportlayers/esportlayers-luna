@@ -47,7 +47,7 @@ export interface ConnectedMessage extends BaseMessage {
 export interface RoshanMessage extends BaseMessage {
     type: MessageType.roshan;
     value: {
-        state: 'alive' | 'respawn_base' | 'respawn_variable';
+        state: 'alive' | 'respawn_base' | 'respawn_variable' | 'aegis';
         remaining: number;
     };
 }

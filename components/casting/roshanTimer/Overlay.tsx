@@ -7,7 +7,7 @@ import Timer from "./Timer";
 export default function Overlay({testing, auth}: {testing: boolean; auth: string}): ReactElement | null {
     const message = useMessageListener();
     const [remaining, setRemaining] = useState(0);
-    const [state, setState] = useState<'alive' | 'respawn_base' | 'respawn_variable'>('alive');
+    const [state, setState] = useState<'alive' | 'respawn_base' | 'respawn_variable' | 'aegis'>('alive');
 
     useEffect(() => {
         if(message && isRoshanMessage(message)) {
@@ -15,6 +15,7 @@ export default function Overlay({testing, auth}: {testing: boolean; auth: string
             setState(message.value.state);
         } else if (message && isWinnerMessage(message)) {
             setRemaining(0);
+            setState('alive');
         }
     }, [message]);
 
