@@ -19,7 +19,8 @@ export async function fetchRoshOverlay(abortController: AbortController, key: st
 export default function Timer({auth, remaining, state}: Props): ReactElement | null {
     const [cfg] = useAbortFetch(fetchRoshOverlay, auth);
 
-    const timeLeft = state === 'aegis' ? (remaining - 180) : remaining;
+    let timeLeft = state === 'aegis' ? (remaining - 180) : remaining;
+    timeLeft = timeLeft < 0 ? 0 : timeLeft;
     const minutes = Math.floor(timeLeft / 60);
     let seconds: number | string = timeLeft % 60;
     seconds = seconds >= 10 ? seconds : '0' + seconds;
