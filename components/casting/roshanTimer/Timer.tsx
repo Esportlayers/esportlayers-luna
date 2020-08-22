@@ -4,6 +4,7 @@ import { get } from "../../../modules/Network";
 import { useAbortFetch } from "../../../hooks/abortFetch";
 import classNames from "classnames";
 import GoogleFontLoader from 'react-google-font-loader';
+import { getVariant } from "../../dotaStats/DotaOverlayFrame";
 
 
 interface Props {
@@ -26,7 +27,7 @@ export default function Timer({auth, remaining, state}: Props): ReactElement | n
     seconds = seconds >= 10 ? seconds : '0' + seconds;
 
     if(cfg) {
-        return <div className={classNames('wrapper', state)}>
+        return <div className={classNames('wrapper', state)} style={{...getVariant(cfg.variant)}}>
             {cfg.font && cfg.font !== 'Arial' && <GoogleFontLoader fonts={[{font: cfg.font, weights: [cfg.variant]}]} />}
             <div className={'timer'}>
                 {minutes}:{seconds}
