@@ -20,9 +20,20 @@ export interface BaseMessage {
     date: number;
 }
 
+export enum GameState {
+    DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD = 'DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD',
+    DOTA_GAMERULES_STATE_HERO_SELECTION = 'DOTA_GAMERULES_STATE_HERO_SELECTION',
+    DOTA_GAMERULES_STATE_STRATEGY_TIME = 'DOTA_GAMERULES_STATE_STRATEGY_TIME',
+    DOTA_GAMERULES_STATE_TEAM_SHOWCASE = 'DOTA_GAMERULES_STATE_TEAM_SHOWCASE',
+    DOTA_GAMERULES_STATE_WAIT_FOR_MAP_TO_LOAD = 'DOTA_GAMERULES_STATE_WAIT_FOR_MAP_TO_LOAD',
+    DOTA_GAMERULES_STATE_PRE_GAME = 'DOTA_GAMERULES_STATE_PRE_GAME',
+    DOTA_GAMERULES_STATE_GAME_IN_PROGRESS = 'DOTA_GAMERULES_STATE_GAME_IN_PROGRESS',
+    DOTA_GAMERULES_STATE_POST_GAME = 'DOTA_GAMERULES_STATE_POST_GAME'
+}
+
 export interface GameStateMessage extends BaseMessage {
     type: MessageType.gamestate;
-    value: string;  
+    value: GameState;  
 };
 
 export interface WinnerMessage extends BaseMessage {
@@ -69,6 +80,14 @@ export function isWinnerMessage(msg: Message): msg is WinnerMessage {
 
 export function isPauseMessage(msg: Message): msg is PauseMessage {
     return msg.type === MessageType.pause;
+}
+
+export function isConnectedMessgae(msg: Message): msg is ConnectedMessage {
+    return msg.type === MessageType.connected;
+}
+
+export function isGameStateMessage(msg: Message): msg is GameStateMessage {
+    return msg.type === MessageType.gamestate;
 }
 
 interface NewMessageAction {
