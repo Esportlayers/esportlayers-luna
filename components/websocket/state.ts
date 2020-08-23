@@ -12,6 +12,7 @@ export enum MessageType {
     winner = 'winner',
     betting = 'betting',
     roshan = 'roshan',
+    pause='pause',
 }
 
 export interface BaseMessage {
@@ -47,15 +48,27 @@ export interface ConnectedMessage extends BaseMessage {
 export interface RoshanMessage extends BaseMessage {
     type: MessageType.roshan;
     value: {
-        state: 'alive' | 'respawn_base' | 'respawn_variable';
+        state: 'alive' | 'respawn_base' | 'respawn_variable' | 'aegis';
         remaining: number;
     };
 }
+export interface PauseMessage extends BaseMessage {
+    type: MessageType.pause;
+    value: boolean;
+}
 
-export type Message =  GameStateMessage | WinnerMessage | ChatMessage | BettingMessage | ConnectedMessage | RoshanMessage;
+export type Message =  GameStateMessage | WinnerMessage | ChatMessage | BettingMessage | ConnectedMessage | RoshanMessage | PauseMessage;
 
 export function isRoshanMessage(msg: Message): msg is RoshanMessage {
     return msg.type === MessageType.roshan;
+}
+
+export function isWinnerMessage(msg: Message): msg is WinnerMessage {
+    return msg.type === MessageType.winner;
+}
+
+export function isPauseMessage(msg: Message): msg is PauseMessage {
+    return msg.type === MessageType.pause;
 }
 
 interface NewMessageAction {
