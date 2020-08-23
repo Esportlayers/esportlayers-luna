@@ -81,7 +81,7 @@ export default function Overlay({frameKey}: {frameKey: string}): ReactElement | 
             visibleGameStates.has(gamestate)
          || (!Boolean(user.dotaStatsMenuHidden) && (!gamestate || mainMenuGameState.has(gamestate))) 
          || (!Boolean(user.dotaStatsPickHidden) && pickGameStates.has(gamestate)));
-    }, [connected, user]);
+    }, [connected, gamestate, user]);
 
     if(active) {
         return <DotaOverlayFrame wins={wins} loss={lost} auth={frameKey} />;
