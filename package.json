@@ -10,9 +10,9 @@
   "dependencies": {
     "@sentry/apm": "^5.21.3",
     "@sentry/react": "^5.21.3",
-    "@streamdota/shared-types": "1.1.0",
+    "@streamdota/shared-types": "1.2.1",
     "classnames": "^2.2.6",
-    "dayjs": "^1.8.33",
+    "dayjs": "^1.8.34",
     "dotenv": "^8.2.0",
     "isomorphic-unfetch": "^3.0.0",
     "next": "9.5.2",
@@ -26,6 +26,6 @@
     "@types/dotenv": "^8.2.0",
     "@types/node": "^14.6.0",
     "@types/react": "^16.9.46",
-    "typescript": "^3.9.7"
+    "typescript": "^4.0.2"
   }
 }
