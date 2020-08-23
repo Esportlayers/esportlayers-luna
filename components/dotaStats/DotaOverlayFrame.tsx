@@ -4,12 +4,15 @@ import { useAbortFetch } from "../../hooks/abortFetch";
 import { get } from "../../modules/Network";
 import { OverlayConfig } from "@streamdota/shared-types";
 
-export function getVariant(variant: string): React.CSSProperties {
-    return {
-        //@ts-ignore
-        fontWeight: variant.substring(0, 3), 
-        fontStyle: variant.includes('italic') ? 'italic' : 'initial'
-    };
+export function getVariant(variant?: string): React.CSSProperties {
+    if(variant) {
+        return {
+            //@ts-ignore
+            fontWeight: variant.substring(0, 3), 
+            fontStyle: variant.includes('italic') ? 'italic' : 'initial'
+        };
+    }
+    return {};
 }
 
 function Number({color, x, y, height, cfg, children}: {color: string, x: number, y:number, height: string, cfg: OverlayConfig, children: ReactNode}): ReactElement {

@@ -6,6 +6,7 @@ import { useBetStateValue } from "../Context";
 import { useInterval } from "../../../hooks/interval";
 import { useAbortFetch } from "../../../hooks/abortFetch";
 import { get } from "../../../modules/Network";
+import { getVariant } from "../../dotaStats/DotaOverlayFrame";
 
 interface Props {
     auth: string;
@@ -42,7 +43,7 @@ export default React.memo(function Frame({auth, testing}: Props): ReactElement |
         return <div className={'wrapper'}>
             {overlay.fontFamily && <GoogleFontLoader fonts={[{font: overlay.fontFamily, weights: [overlay.fontVariant]}]} />}
     
-            <div className={'counter'}>{timer}</div>
+            <div className={'counter'} style={{...getVariant(overlay.fontVariant)}}>{timer}</div>
     
             <style jsx global>{`
                 body, html {
