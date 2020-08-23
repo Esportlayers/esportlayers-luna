@@ -36,7 +36,7 @@ export default function Overlay({frameKey}: {frameKey: string}): ReactElement | 
     const [wins, setWins] = useState(0);
     const [lost, setLost] = useState(0);
     const [connected, setConnected] = useState(false);
-    const [gamestate, setGamestate] = useState<GameState | null>(GameState.DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD);
+    const [gamestate, setGamestate] = useState<GameState | null>(null);
 
     useEffect(() => setConnected(user && user.gsiActive), [user]);
 
@@ -79,8 +79,8 @@ export default function Overlay({frameKey}: {frameKey: string}): ReactElement | 
         return connected 
         && (
             visibleGameStates.has(gamestate)
-         || (!user.dotaStatsMenuHidden && (!gamestate || mainMenuGameState.has(gamestate))) 
-         || (!user.dotaStatsPickHidden && pickGameStates.has(gamestate)));
+         || (!Boolean(user.dotaStatsMenuHidden) && (!gamestate || mainMenuGameState.has(gamestate))) 
+         || (!Boolean(user.dotaStatsPickHidden) && pickGameStates.has(gamestate)));
     }, [connected, user]);
 
     if(active) {
