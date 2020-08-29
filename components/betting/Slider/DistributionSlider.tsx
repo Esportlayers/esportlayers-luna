@@ -2,13 +2,15 @@ import { ReactElement } from "react";
 import { BetOverlay } from "@streamdota/shared-types";
 import GoogleFontLoader from "react-google-font-loader";
 import { getVariant } from "../../dotaStats/DotaOverlayFrame";
+import classNames from "classnames";
 
 interface Props {
     overlay: BetOverlay;
     distribution?: number;
+    delay: number;
 }
 
-export default function DistributionSlider({overlay, distribution = 50}: Props): ReactElement {
+export default function DistributionSlider({overlay, distribution = 50, delay}: Props): ReactElement {
     return <>
         {overlay.fontFamily && <GoogleFontLoader fonts={[{font: overlay.fontFamily, weights: [overlay.fontVariant]}]} />}
 
@@ -16,7 +18,7 @@ export default function DistributionSlider({overlay, distribution = 50}: Props):
             <div className={'vote votaA'} style={{...getVariant(overlay.fontVariant)}}>
                 !bet a
             </div>
-            <div className={'slider'}>
+            <div className={classNames('slider', {delay})}>
                 <div className={'progress'} style={{width: distribution + '%'}}/>
             </div>
             <div className={'vote votaB'} style={{...getVariant(overlay.fontVariant)}}>
@@ -47,6 +49,10 @@ export default function DistributionSlider({overlay, distribution = 50}: Props):
                 border-radius: 8px;
                 height: 12px;
                 background-color: ${overlay.distributionColorRight};
+            }
+
+            .delay {
+                visibility: hidden;
             }
 
             .progress {

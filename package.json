@@ -10,7 +10,7 @@
   "dependencies": {
     "@sentry/apm": "^5.22.3",
     "@sentry/react": "^5.22.3",
-    "@streamdota/shared-types": "1.2.2",
+    "@streamdota/shared-types": "1.2.3",
     "classnames": "^2.2.6",
     "dayjs": "^1.8.34",
     "dotenv": "^8.2.0",
