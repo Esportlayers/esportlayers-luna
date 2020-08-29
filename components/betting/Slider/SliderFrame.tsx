@@ -7,14 +7,16 @@ import DistributionSlider from "./DistributionSlider";
 import { useMessageListener } from "../../websocket/MessageHandler";
 import dayjs from "dayjs";
 import { isOverlayMessage } from "../../websocket/state";
+import { fetchUser } from "../../dotaStats/Overlay";
 
 interface Props {
     auth: string;
     testing: boolean;
 }
 
-export default React.memo(function Frame({auth, testing}: Props): ReactElement | null {
+export default function Frame({auth, testing}: Props): ReactElement | null {
     const [overlay, reload] = useAbortFetch(fetchOverlay, auth);
+    const [user, reloadUser] = useAbortFetch(fetchUser, auth);
     const [{betRound}] = useBetStateValue();
 
     const distribution = useMemo(() => {
@@ -33,8 +35,9 @@ export default React.memo(function Frame({auth, testing}: Props): ReactElement |
     useEffect(() => {
         if(message) {
             if(isOverlayMessage(message)) {
-                setCacheKey(message.date);
                 reload();
+                reloadUser();
+                setCacheKey(message.date);
             }
         }
     }, [message])
@@ -42,7 +45,7 @@ export default React.memo(function Frame({auth, testing}: Props): ReactElement |
     if(overlay && (betRound.status === 'betting' || testing)) {
         return <div key={cacheKey}>
             {overlay.fontFamily && <GoogleFontLoader fonts={[{font: overlay.fontFamily, weights: [overlay.fontVariant]}]} />}
-            <DistributionSlider overlay={overlay} distribution={distribution} />
+            <DistributionSlider overlay={overlay} distribution={distribution} delay={user && user.streamDelay} />
             <style jsx global>{`
                 body, html {
                     margin: 0;
@@ -53,4 +56,4 @@ export default React.memo(function Frame({auth, testing}: Props): ReactElement |
     }
 
     return null;
-});
+}
