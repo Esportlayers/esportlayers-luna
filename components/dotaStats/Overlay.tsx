@@ -3,8 +3,9 @@ import { DotaStats as DotaStatsEntitiy, User } from "@streamdota/shared-types";
 import { useMessageListener } from "../websocket/MessageHandler";
 import { get } from "../../modules/Network";
 import { useAbortFetch } from "../../hooks/abortFetch";
-import { isWinnerMessage, isConnectedMessgae, isGameStateMessage, GameState } from "../websocket/state";
+import { isWinnerMessage, isConnectedMessgae, isGameStateMessage, GameState, isOverlayMessage } from "../websocket/state";
 import DotaOverlayFrame from "./DotaOverlayFrame";
+import dayjs from "dayjs";
 
 export async function fetchStats(abortController: AbortController, apiKey: string): Promise<DotaStatsEntitiy[]> {
     return (await get<DotaStatsEntitiy[]>('/user/dotaStats/' + apiKey, 'json', {signal: abortController.signal}));
@@ -31,6 +32,7 @@ const mainMenuGameState = new Set([
 
 export default function Overlay({frameKey, testing}: {frameKey: string; testing: boolean;}): ReactElement | null {
     const message = useMessageListener();
+    const [cacheKey, setCacheKey] = useState(dayjs().unix());
     const [status] = useAbortFetch(fetchStats, frameKey);
     const [user] = useAbortFetch(fetchUser, frameKey);
     const [wins, setWins] = useState(0);
@@ -72,6 +74,10 @@ export default function Overlay({frameKey, testing}: {frameKey: string; testing:
             if(isGameStateMessage(message)) {
                 setGamestate(message.value);
             }
+
+            if(isOverlayMessage(message)) {
+                setCacheKey(message.date);
+            }
         }
     }, [message])
 
@@ -84,7 +90,7 @@ export default function Overlay({frameKey, testing}: {frameKey: string; testing:
     }, [connected, gamestate, user]);
 
     if(active || testing) {
-        return <DotaOverlayFrame wins={wins} loss={lost} auth={frameKey} />;
+        return <DotaOverlayFrame wins={wins} loss={lost} auth={frameKey} key={cacheKey} />;
     }
     return null;
 }
