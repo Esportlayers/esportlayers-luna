@@ -43,7 +43,6 @@ export default function DotaOverlayFrame({wins, loss, auth}: {wins: number; loss
             <div className={'positionFrame ' + (!cfg.showBackground && 'noBg')}>
                 <div className={'container'}>
                     <Number color={cfg.winColor} cfg={cfg} x={cfg.winX} y={cfg.winY} height={'.9em'}>{wins}</Number>
-                    <Number color={cfg.dividerColor} cfg={cfg} x={cfg.dividerX} y={cfg.dividerY} height={'.7em'}>:</Number>
                     <Number color={cfg.lossColor} cfg={cfg} x={cfg.lossX} y={cfg.lossY} height={'.9em'}>{loss}</Number>
                 </div>
             </div>

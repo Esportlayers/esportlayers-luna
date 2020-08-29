@@ -29,7 +29,7 @@ const mainMenuGameState = new Set([
     GameState.DOTA_GAMERULES_STATE_POST_GAME,
 ]);
 
-export default function Overlay({frameKey}: {frameKey: string}): ReactElement | null {
+export default function Overlay({frameKey, testing}: {frameKey: string; testing: boolean;}): ReactElement | null {
     const message = useMessageListener();
     const [status] = useAbortFetch(fetchStats, frameKey);
     const [user] = useAbortFetch(fetchUser, frameKey);
@@ -83,7 +83,7 @@ export default function Overlay({frameKey}: {frameKey: string}): ReactElement | 
          || (!Boolean(user.dotaStatsPickHidden) && pickGameStates.has(gamestate)));
     }, [connected, gamestate, user]);
 
-    if(active) {
+    if(active || testing) {
         return <DotaOverlayFrame wins={wins} loss={lost} auth={frameKey} />;
     }
     return null;
