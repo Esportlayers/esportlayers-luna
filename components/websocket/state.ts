@@ -13,6 +13,7 @@ export enum MessageType {
     betting = 'betting',
     roshan = 'roshan',
     pause='pause',
+    overlay='overlay',
 }
 
 export interface BaseMessage {
@@ -67,8 +68,12 @@ export interface PauseMessage extends BaseMessage {
     type: MessageType.pause;
     value: boolean;
 }
+export interface OverlayMessage extends BaseMessage {
+    type: MessageType.overlay;
+    value: boolean;
+}
 
-export type Message =  GameStateMessage | WinnerMessage | ChatMessage | BettingMessage | ConnectedMessage | RoshanMessage | PauseMessage;
+export type Message =  GameStateMessage | WinnerMessage | ChatMessage | BettingMessage | ConnectedMessage | RoshanMessage | PauseMessage | OverlayMessage;
 
 export function isRoshanMessage(msg: Message): msg is RoshanMessage {
     return msg.type === MessageType.roshan;
@@ -88,6 +93,10 @@ export function isConnectedMessgae(msg: Message): msg is ConnectedMessage {
 
 export function isGameStateMessage(msg: Message): msg is GameStateMessage {
     return msg.type === MessageType.gamestate;
+}
+
+export function isOverlayMessage(msg: Message): msg is OverlayMessage {
+    return msg.type === MessageType.overlay;
 }
 
 interface NewMessageAction {

@@ -13,9 +13,9 @@ const Overlay = dynamic(
     { ssr: false }
 );
 
-function DotaStats({auth}: {auth: string}): ReactElement {
+function DotaStats({auth, testing}: {auth: string, testing: boolean}): ReactElement {
     return <ContextProvider initialState={initialState} reducer={reducer} url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
-        <Overlay frameKey={auth} />
+        <Overlay frameKey={auth} testing={testing}/>
 
         <style global jsx>{`
             html, body {
@@ -26,8 +26,8 @@ function DotaStats({auth}: {auth: string}): ReactElement {
     </ContextProvider>;
 }
 
-DotaStats.getInitialProps = ({query: {auth}}) => {
-    return {auth};
+DotaStats.getInitialProps = ({query: {auth, testing}}) => {
+    return {auth, testing: Boolean(testing)};
 }
 
 export default DotaStats;

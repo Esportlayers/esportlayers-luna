@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useState, useEffect } from "react";
 import GoogleFontLoader from "react-google-font-loader";
 import dayjs from "dayjs";
 import { BetRoundStats, BetOverlay } from "@streamdota/shared-types";
@@ -7,6 +7,8 @@ import { useInterval } from "../../../hooks/interval";
 import { useAbortFetch } from "../../../hooks/abortFetch";
 import { get } from "../../../modules/Network";
 import { getVariant } from "../../dotaStats/DotaOverlayFrame";
+import { useMessageListener } from "../../websocket/MessageHandler";
+import { isOverlayMessage } from "../../websocket/state";
 
 interface Props {
     auth: string;
@@ -34,13 +36,24 @@ export async function fetchOverlay(abortController: AbortController, key: string
 }
 
 export default React.memo(function Frame({auth, testing}: Props): ReactElement | null {
-    const [overlay] = useAbortFetch(fetchOverlay, auth);
+    const [overlay, reaload] = useAbortFetch(fetchOverlay, auth);
     const [{betRound}] = useBetStateValue();
     const [timer, setTimer] = useState(calculateRemaining(betRound));
     useInterval(() => setTimer(calculateRemaining(betRound)));
+    const message = useMessageListener();
+    const [cacheKey, setCacheKey] = useState(dayjs().unix());
+
+    useEffect(() => {
+        if(message) {
+            if(isOverlayMessage(message)) {
+                reaload();
+                setCacheKey(message.date);
+            }
+        }
+    }, [message])
 
     if(overlay && (betRound.status === 'betting' || testing)) {
-        return <div className={'wrapper'}>
+        return <div className={'wrapper'} key={cacheKey}>
             {overlay.fontFamily && <GoogleFontLoader fonts={[{font: overlay.fontFamily, weights: [overlay.fontVariant]}]} />}
     
             <div className={'counter'} style={{...getVariant(overlay.fontVariant)}}>{timer}</div>
