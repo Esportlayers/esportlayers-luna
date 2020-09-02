@@ -3,27 +3,31 @@ import { useBetStateValue } from "../Context";
 import Overlay from "./Overlay";
 import { useMessageListener } from "../../websocket/MessageHandler";
 import dayjs from "dayjs";
-import { isOverlayMessage } from "../../websocket/state";
+import { isOverlayMessage, isGameStateMessage } from "../../websocket/state";
+import { useAbortFetch } from "../../../hooks/abortFetch";
+import { fetchUser } from "../../dotaStats/Overlay";
 
 interface Props {
     auth: string;
+    testing: boolean;
 }
 
-export default React.memo(function Frame({auth}: Props): ReactElement | null {
-    const [{betRound}] = useBetStateValue();
+export default React.memo(function Frame({auth, testing}: Props): ReactElement | null {
+    const [user] = useAbortFetch(fetchUser, auth);
     const message = useMessageListener();
     const [cacheKey, setCacheKey] = useState(dayjs().unix());
 
     useEffect(() => {
         if(message) {
-            if(isOverlayMessage(message)) {
+            if(isOverlayMessage(message) || isGameStateMessage(message)) {
                 setCacheKey(message.date);
             }
         }
     }, [message])
 
-    if(betRound && betRound.betSeason !== 0) {
-        return <Overlay season={betRound.betSeason} auth={auth} key={cacheKey}/>;
+    if(user) {
+        return <Overlay season={user.betSeasonId} auth={auth} key={cacheKey} testing={testing}/>;
     }
+
     return null;
 });
