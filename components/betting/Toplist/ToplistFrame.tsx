@@ -1,5 +1,4 @@
 import React, { ReactElement, useState, useEffect } from "react";
-import { useBetStateValue } from "../Context";
 import Overlay from "./Overlay";
 import { useMessageListener } from "../../websocket/MessageHandler";
 import dayjs from "dayjs";
@@ -12,7 +11,7 @@ interface Props {
     testing: boolean;
 }
 
-export default React.memo(function Frame({auth, testing}: Props): ReactElement | null {
+export default function Frame({auth, testing}: Props): ReactElement | null {
     const [user] = useAbortFetch(fetchUser, auth);
     const message = useMessageListener();
     const [cacheKey, setCacheKey] = useState(dayjs().unix());
@@ -30,4 +29,4 @@ export default React.memo(function Frame({auth, testing}: Props): ReactElement |
     }
 
     return null;
-});
+}
