@@ -43,7 +43,11 @@ export async function fetchToplist(abortController: AbortController, key: string
 
 export default function Overlay({auth, season, testing}: Props): ReactElement | null {
     const [overlay] = useAbortFetch(fetchOverlay, auth);
-    const [toplist] = useAbortFetch(fetchToplist, auth, season);
+    const [toplist, reload] = useAbortFetch(fetchToplist, auth, season);
+    const [{betRound}] = useBetStateValue();
+    useEffect(() => {
+        reload();
+    }, [betRound]);
 
     const list = useMemo(() => {
         if(toplist && toplist.length > 0) {
@@ -53,7 +57,7 @@ export default function Overlay({auth, season, testing}: Props): ReactElement | 
 
     }, [toplist]);
 
-    if(overlay && list.length) {
+    if(overlay && toplist) {
         return <>
             {overlay.fontFamily && <GoogleFontLoader fonts={[{font: overlay.fontFamily, weights: [overlay.fontVariant]}]} />}
             <Toplist list={list.slice(0, overlay.toplistMaxEntry)} overlay={overlay} />
