@@ -7,14 +7,14 @@ const BetContext = dynamic(
     { ssr: false }
 );
 
-function Toplist({auth}: {auth: string}): ReactElement {
+function Toplist({auth, testing}: {auth: string; testing: boolean}): ReactElement {
     return <BetContext auth={auth}>
-        <ToplistFrame auth={auth} />
+        <ToplistFrame auth={auth} testing={testing} />
     </BetContext>;
 }
 
-Toplist.getInitialProps = ({query: {auth}}) => {
-    return {auth};
+Toplist.getInitialProps = ({query: {auth, testing}}) => {
+    return {auth, testing: Boolean(testing)};
 }
 
 export default Toplist;
