@@ -7,13 +7,16 @@ enum ACTIONS {
 
 export enum MessageType {
     chat = 'chat',
-    gamestate = 'gamestate',
-    connected = 'connected',
-    winner = 'winner',
     betting = 'betting',
-    roshan = 'roshan',
-    pause='pause',
     overlay='overlay',
+    gsi_roshan = 'gsi_roshan',
+    gsi_connected = 'gsi_connected',
+    gsi_draft = 'gsi_draft',
+    gsi_gamedata = 'gsi_gamedata',
+    gsi_game_paused = 'gsi_game_paused',
+    gsi_game_state = 'gsi_game_state',
+    gsi_game_winner = 'gsi_game_winner',
+    gsi_game_win_chance = 'gsi_game_win_chance',
 }
 
 export interface BaseMessage {
@@ -32,15 +35,10 @@ export enum GameState {
     DOTA_GAMERULES_STATE_POST_GAME = 'DOTA_GAMERULES_STATE_POST_GAME'
 }
 
-export interface GameStateMessage extends BaseMessage {
-    type: MessageType.gamestate;
+export interface GsiGameStateMessage extends BaseMessage {
+    type: MessageType.gsi_game_state;
     value: GameState;  
 };
-
-export interface WinnerMessage extends BaseMessage {
-    type: MessageType.winner;
-    value: boolean;
-}
 
 export interface ChatMessage extends BaseMessage  {
     type: MessageType.chat;
@@ -53,46 +51,82 @@ export interface BettingMessage extends BaseMessage {
     type: MessageType.betting;
     value: BetRoundStats;
 }
-export interface ConnectedMessage extends BaseMessage {
-    type: MessageType.connected;
-    value: boolean;
-}
-export interface RoshanMessage extends BaseMessage {
-    type: MessageType.roshan;
+
+export interface GsiRoshanMessage extends BaseMessage {
+    type: MessageType.gsi_roshan;
     value: {
         state: 'alive' | 'respawn_base' | 'respawn_variable' | 'aegis';
         remaining: number;
     };
 }
-export interface PauseMessage extends BaseMessage {
-    type: MessageType.pause;
+
+export interface GsiGameDataMessage extends BaseMessage {
+    type: MessageType.gsi_gamedata;
+    value: {
+        matchId: number;
+        type: 'playing' | 'observing';
+        gameState: GameState;
+        paused: boolean;
+        winner: string;
+        radiantWinChance: number;
+        radiant?: {
+            name: string;
+            logo: string;
+        };
+        dire?: {
+            name: string;
+            logo: string;
+        };
+    };
+}
+
+export interface GsiConnectedMessage extends BaseMessage {
+    type: MessageType.gsi_connected;
     value: boolean;
 }
+
+export interface GsiPauseMessage extends BaseMessage {
+    type: MessageType.gsi_game_paused;
+    value: boolean;
+}
+
+export interface GsiWinnerMessage extends BaseMessage {
+    type: MessageType.gsi_game_winner;
+    value: {
+        isPlayingWin: boolean;
+        winnerTeam: 'none' | 'radiant' | 'dire';
+    };
+}
+
 export interface OverlayMessage extends BaseMessage {
     type: MessageType.overlay;
     value: boolean;
 }
 
-export type Message =  GameStateMessage | WinnerMessage | ChatMessage | BettingMessage | ConnectedMessage | RoshanMessage | PauseMessage | OverlayMessage;
+export type Message =  GsiGameStateMessage | GsiGameDataMessage | ChatMessage | BettingMessage | GsiConnectedMessage | GsiRoshanMessage | GsiWinnerMessage | OverlayMessage | GsiPauseMessage;
 
-export function isRoshanMessage(msg: Message): msg is RoshanMessage {
-    return msg.type === MessageType.roshan;
+export function isGsiRoshanMessage(msg: Message): msg is GsiRoshanMessage {
+    return msg.type === MessageType.gsi_roshan;
 }
 
-export function isWinnerMessage(msg: Message): msg is WinnerMessage {
-    return msg.type === MessageType.winner;
+export function isGsiWinnerMessage(msg: Message): msg is GsiWinnerMessage {
+    return msg.type === MessageType.gsi_game_winner;
 }
 
-export function isPauseMessage(msg: Message): msg is PauseMessage {
-    return msg.type === MessageType.pause;
+export function isGsiConnectedMessage(msg: Message): msg is GsiConnectedMessage {
+    return msg.type === MessageType.gsi_connected;
 }
 
-export function isConnectedMessgae(msg: Message): msg is ConnectedMessage {
-    return msg.type === MessageType.connected;
+export function isGsiPausedMessage(msg: Message): msg is GsiPauseMessage {
+    return msg.type === MessageType.gsi_game_paused;
 }
 
-export function isGameStateMessage(msg: Message): msg is GameStateMessage {
-    return msg.type === MessageType.gamestate;
+export function isGsiGameStateMessage(msg: Message): msg is GsiGameStateMessage {
+    return msg.type === MessageType.gsi_game_state;
+}
+
+export function isGsiGameDataMessage(msg: Message): msg is GsiGameDataMessage {
+    return msg.type === MessageType.gsi_gamedata;
 }
 
 export function isOverlayMessage(msg: Message): msg is OverlayMessage {

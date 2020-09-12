@@ -2,7 +2,7 @@ import React, { ReactElement, useState, useEffect } from "react";
 import Overlay from "./Overlay";
 import { useMessageListener } from "../../websocket/MessageHandler";
 import dayjs from "dayjs";
-import { isOverlayMessage, isGameStateMessage } from "../../websocket/state";
+import { isOverlayMessage, isGsiGameStateMessage } from "../../websocket/state";
 import { useAbortFetch } from "../../../hooks/abortFetch";
 import { fetchUser } from "../../dotaStats/Overlay";
 
@@ -18,7 +18,7 @@ export default function Frame({auth, testing}: Props): ReactElement | null {
 
     useEffect(() => {
         if(message) {
-            if(isOverlayMessage(message) || isGameStateMessage(message)) {
+            if(isOverlayMessage(message) || isGsiGameStateMessage(message)) {
                 setCacheKey(message.date);
             }
         }

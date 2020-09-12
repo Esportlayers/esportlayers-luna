@@ -1,6 +1,6 @@
 import { ReactElement, useState, useEffect } from "react";
 import { useMessageListener } from "../../websocket/MessageHandler";
-import { isRoshanMessage, isWinnerMessage, isPauseMessage, isOverlayMessage } from "../../websocket/state";
+import { isOverlayMessage, isGsiPausedMessage, isGsiWinnerMessage, isGsiRoshanMessage } from "../../websocket/state";
 import { useInterval } from "../../../hooks/interval";
 import Timer from "./Timer";
 import dayjs from "dayjs";
@@ -14,15 +14,15 @@ export default function Overlay({testing, auth}: {testing: boolean; auth: string
 
     useEffect(() => {
         if(message) {
-            if(isRoshanMessage(message)) {
+            if(isGsiRoshanMessage(message)) {
                 setRemaining(message.value.remaining);
                 setState(message.value.state);
             }
-            if (isWinnerMessage(message)) {
+            if (isGsiWinnerMessage(message) && message.value.winnerTeam !== 'none') {
                 setRemaining(0);
                 setState('alive');
             }
-            if(isPauseMessage(message)) {
+            if(isGsiPausedMessage(message)) {
                 setPaused(message.value);
             }
             

@@ -3,7 +3,7 @@ import { DotaStats as DotaStatsEntitiy, User } from "@streamdota/shared-types";
 import { useMessageListener } from "../websocket/MessageHandler";
 import { get } from "../../modules/Network";
 import { useAbortFetch } from "../../hooks/abortFetch";
-import { isWinnerMessage, isConnectedMessgae, isGameStateMessage, GameState, isOverlayMessage } from "../websocket/state";
+import { GameState, isOverlayMessage, isGsiWinnerMessage, isGsiConnectedMessage, isGsiGameStateMessage, isGsiGameDataMessage } from "../websocket/state";
 import DotaOverlayFrame from "./DotaOverlayFrame";
 import dayjs from "dayjs";
 
@@ -39,6 +39,7 @@ export default function Overlay({frameKey, testing}: {frameKey: string; testing:
     const [lost, setLost] = useState(0);
     const [connected, setConnected] = useState(false);
     const [gamestate, setGamestate] = useState<GameState | null>(null);
+    const [activityType, setActivityType] = useState<'playing' | 'observing'>('playing');
 
     useEffect(() => setConnected(user && user.gsiActive), [user]);
 
@@ -59,30 +60,35 @@ export default function Overlay({frameKey, testing}: {frameKey: string; testing:
 
     useEffect(() => {
         if(message) {
-            if(isWinnerMessage(message)) {
-                if(message.value) {
+            if(isGsiWinnerMessage(message)) {
+                if(message.value.isPlayingWin) {
                     setWins(wins + 1);
                 } else {
                     setLost(lost + 1);
                 }
             }
 
-            if(isConnectedMessgae(message)) {
+            if(isGsiConnectedMessage(message)) {
                 setConnected(message.value);
             }
 
-            if(isGameStateMessage(message)) {
+            if(isGsiGameStateMessage(message)) {
                 setGamestate(message.value);
             }
 
             if(isOverlayMessage(message)) {
                 setCacheKey(message.date);
             }
+
+            if(isGsiGameDataMessage(message)) {
+                setActivityType(message.value.type);
+            }
         }
     }, [message])
 
     const active = useMemo<boolean>(() => {
         return connected 
+        && activityType === 'playing'
         && (
             visibleGameStates.has(gamestate)
          || (!Boolean(user.dotaStatsMenuHidden) && (!gamestate || mainMenuGameState.has(gamestate))) 
