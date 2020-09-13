@@ -10,15 +10,17 @@ interface Props {
     delay: number;
     aBets?: number;
     bBets?:number;
+    teamA?: string;
+    teamB?: string;
 }
 
-export default function DistributionSlider({overlay, distribution = 50, delay, aBets = 0, bBets = 0}: Props): ReactElement {
+export default function DistributionSlider({overlay, distribution = 50, delay, aBets = 0, bBets = 0, teamA = 'a', teamB = 'b'}: Props): ReactElement {
     return <>
         {overlay.fontFamily && <GoogleFontLoader fonts={[{font: overlay.fontFamily, weights: [overlay.fontVariant]}]} />}
 
         <div className={'distributionSlider'}>
             <div className={'vote votaA'} style={{...getVariant(overlay.fontVariant)}}>
-                !bet a
+                !bet {teamA}
             </div>
             <div className={classNames('distributionWrapper', {delay})}>
                 <div className={'slider'}>
@@ -32,7 +34,7 @@ export default function DistributionSlider({overlay, distribution = 50, delay, a
                 </div>}
             </div>
             <div className={'vote votaB'} style={{...getVariant(overlay.fontVariant)}}>
-                !bet b
+                !bet {teamB}
             </div>
         </div>
 

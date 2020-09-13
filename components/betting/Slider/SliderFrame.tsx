@@ -45,7 +45,7 @@ export default function Frame({auth, testing}: Props): ReactElement | null {
     if(overlay && (betRound.status === 'betting' || testing)) {
         return <div key={cacheKey}>
             {overlay.fontFamily && <GoogleFontLoader fonts={[{font: overlay.fontFamily, weights: [overlay.fontVariant]}]} />}
-            <DistributionSlider overlay={overlay} distribution={distribution} delay={user && user.streamDelay} aBets={betRound.aBets} bBets={betRound.bBets}/>
+            <DistributionSlider overlay={overlay} distribution={distribution} delay={user && user.streamDelay} aBets={betRound.aBets} bBets={betRound.bBets} teamA={user.teamAName} teamB={user.teamBName}/>
             <style jsx global>{`
                 body, html {
                     margin: 0;
