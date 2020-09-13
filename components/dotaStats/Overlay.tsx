@@ -73,7 +73,7 @@ export default function Overlay({frameKey, testing}: {frameKey: string; testing:
 
     useEffect(() => {
         if(message) {
-            if(isGsiWinnerMessage(message)) {
+            if(isGsiWinnerMessage(message) && message.value?.winnerTeam !== 'none') {
                 if(message.value.isPlayingWin) {
                     setWins(wins + 1);
                 } else {
