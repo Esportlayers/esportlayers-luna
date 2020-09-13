@@ -4,6 +4,16 @@ import { isOverlayMessage, isGsiPausedMessage, isGsiWinnerMessage, isGsiRoshanMe
 import { useInterval } from "../../../hooks/interval";
 import Timer from "./Timer";
 import dayjs from "dayjs";
+import { motion, AnimatePresence } from "framer-motion";
+
+const variants = {
+    hidden: {
+        opacity: 0,
+    },
+    visible: {
+        opacity: 1,
+    }
+}
 
 export default function Overlay({testing, auth}: {testing: boolean; auth: string}): ReactElement | null {
     const message = useMessageListener();
@@ -34,8 +44,11 @@ export default function Overlay({testing, auth}: {testing: boolean; auth: string
 
     useInterval(() => !paused && remaining > 0 && setRemaining(remaining - 1));
 
-    if((remaining > 0 || (state === 'respawn_base' && remaining === 0)) || testing) {
-        return <Timer remaining={remaining} state={state} auth={auth} key={cacheKey}/>;
-    }
-    return null;
+
+    return <AnimatePresence>
+        {((remaining > 0 || (state === 'respawn_base' && remaining === 0)) || testing) && <motion.div initial={'hidden'} animate={'visible'} exit={'hidden'} variants={variants}>
+            <Timer remaining={remaining} state={state} auth={auth} key={cacheKey}/>
+        </motion.div>}
+    </AnimatePresence>;
+    
 }

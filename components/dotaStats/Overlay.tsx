@@ -1,4 +1,4 @@
-import { ReactElement, useState, useEffect, useMemo } from "react";
+import React, { ReactElement, useState, useEffect, useMemo } from "react";
 import { DotaStats as DotaStatsEntitiy, User } from "@streamdota/shared-types";
 import { useMessageListener } from "../websocket/MessageHandler";
 import { get } from "../../modules/Network";
@@ -6,6 +6,8 @@ import { useAbortFetch } from "../../hooks/abortFetch";
 import { GameState, isOverlayMessage, isGsiWinnerMessage, isGsiConnectedMessage, isGsiGameStateMessage, isGsiGameDataMessage } from "../websocket/state";
 import DotaOverlayFrame from "./DotaOverlayFrame";
 import dayjs from "dayjs";
+import { motion, AnimatePresence } from "framer-motion";
+
 
 export async function fetchStats(abortController: AbortController, apiKey: string): Promise<DotaStatsEntitiy[]> {
     return (await get<DotaStatsEntitiy[]>('/user/dotaStats/' + apiKey, 'json', {signal: abortController.signal}));
@@ -29,6 +31,17 @@ const pickGameStates = new Set([
 const mainMenuGameState = new Set([
     GameState.DOTA_GAMERULES_STATE_POST_GAME,
 ]);
+
+const variants = {
+    hidden: {
+        y: 60,
+        opacity: 0,
+    },
+    visible: {
+        y: 0,
+        opacity: 1,
+    }
+}
 
 export default function Overlay({frameKey, testing}: {frameKey: string; testing: boolean;}): ReactElement | null {
     const message = useMessageListener();
@@ -67,7 +80,6 @@ export default function Overlay({frameKey, testing}: {frameKey: string; testing:
                     setLost(lost + 1);
                 }
             }
-
             if(isGsiConnectedMessage(message)) {
                 setConnected(message.value);
             }
@@ -80,7 +92,7 @@ export default function Overlay({frameKey, testing}: {frameKey: string; testing:
                 setCacheKey(message.date);
             }
 
-            if(isGsiGameDataMessage(message)) {
+            if(isGsiGameDataMessage(message) && message.value) {
                 setActivityType(message.value.type);
             }
         }
@@ -95,8 +107,9 @@ export default function Overlay({frameKey, testing}: {frameKey: string; testing:
          || (!Boolean(user.dotaStatsPickHidden) && pickGameStates.has(gamestate)));
     }, [connected, gamestate, user]);
 
-    if(active || testing) {
-        return <DotaOverlayFrame wins={wins} loss={lost} auth={frameKey} key={cacheKey} />;
-    }
-    return null;
+    return <AnimatePresence>
+        {(active || testing) && <motion.div initial={'hidden'} animate={'visible'} exit={'hidden'} variants={variants}>
+            <DotaOverlayFrame wins={wins} loss={lost} auth={frameKey} key={cacheKey} />
+        </motion.div>}
+    </AnimatePresence>;
 }
