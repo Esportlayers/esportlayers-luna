@@ -108,7 +108,7 @@ export default function Overlay({frameKey, testing}: {frameKey: string; testing:
     }, [connected, gamestate, user]);
 
     return <AnimatePresence>
-        {(active || testing) && <motion.div initial={'hidden'} animate={'visible'} exit={'hidden'} variants={variants}>
+        {(active || testing) && <motion.div initial={'hidden'} animate={'visible'} exit={'hidden'} variants={variants} transition={{ type: "spring", stiffness: 300, damping: 30 }}>
             <DotaOverlayFrame wins={wins} loss={lost} auth={frameKey} key={cacheKey} />
         </motion.div>}
     </AnimatePresence>;
