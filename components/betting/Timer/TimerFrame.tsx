@@ -15,9 +15,9 @@ interface Props {
     testing: boolean;
 }
 
-function calculateRemaining(currentBetRound: BetRoundStats): string {
+function calculateRemaining(currentBetRound: BetRoundStats, duration: number = 90): string {
     if(currentBetRound?.status === 'betting') {
-        const finish = currentBetRound.created + 90;
+        const finish = currentBetRound.created + duration;
         const diff = finish - dayjs().unix();
         if(diff > 0) {
             const min = Math.floor(diff / 60);
@@ -38,8 +38,8 @@ export async function fetchOverlay(abortController: AbortController, key: string
 export default React.memo(function Frame({auth, testing}: Props): ReactElement | null {
     const [overlay, reaload] = useAbortFetch(fetchOverlay, auth);
     const [{betRound}] = useBetStateValue();
-    const [timer, setTimer] = useState(calculateRemaining(betRound));
-    useInterval(() => setTimer(calculateRemaining(betRound)));
+    const [timer, setTimer] = useState(calculateRemaining(betRound, overlay?.timerDuration));
+    useInterval(() => setTimer(calculateRemaining(betRound, overlay?.timerDuration)));
     const message = useMessageListener();
     const [cacheKey, setCacheKey] = useState(dayjs().unix());
 
