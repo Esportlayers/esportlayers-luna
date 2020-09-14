@@ -17,6 +17,7 @@ export enum MessageType {
     gsi_game_state = 'gsi_game_state',
     gsi_game_winner = 'gsi_game_winner',
     gsi_game_win_chance = 'gsi_game_win_chance',
+    statsoverlay = 'statsoverlay',
 }
 
 export interface BaseMessage {
@@ -103,7 +104,19 @@ export interface OverlayMessage extends BaseMessage {
     value: boolean;
 }
 
-export type Message =  GsiGameStateMessage | GsiGameDataMessage | ChatMessage | BettingMessage | GsiConnectedMessage | GsiRoshanMessage | GsiWinnerMessage | OverlayMessage | GsiPauseMessage;
+export interface StatsOverlayMessage extends BaseMessage {
+    type: MessageType.statsoverlay;
+    value: {
+        heroId: number;
+        heroClass: string;
+        totalGamesCount: number;
+        matchCount: number;
+        matchWins: number;
+        banCount: number;
+    };
+}
+
+export type Message =  StatsOverlayMessage | GsiGameStateMessage | GsiGameDataMessage | ChatMessage | BettingMessage | GsiConnectedMessage | GsiRoshanMessage | GsiWinnerMessage | OverlayMessage | GsiPauseMessage;
 
 export function isGsiRoshanMessage(msg: Message): msg is GsiRoshanMessage {
     return msg.type === MessageType.gsi_roshan;
@@ -131,6 +144,10 @@ export function isGsiGameDataMessage(msg: Message): msg is GsiGameDataMessage {
 
 export function isOverlayMessage(msg: Message): msg is OverlayMessage {
     return msg.type === MessageType.overlay;
+}
+
+export function isStatsOverlayMessage(msg: Message): msg is StatsOverlayMessage {
+    return msg.type === MessageType.statsoverlay;
 }
 
 interface NewMessageAction {
