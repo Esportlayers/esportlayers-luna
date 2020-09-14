@@ -8,15 +8,23 @@ import { useMessageListener } from "../../websocket/MessageHandler";
 import dayjs from "dayjs";
 import { isOverlayMessage } from "../../websocket/state";
 import { fetchUser } from "../../dotaStats/Overlay";
+import { get } from "../../../modules/Network";
 
 interface Props {
     auth: string;
     testing: boolean;
 }
 
+
+export async function fetchBetCommand(abortController: AbortController, key: string): Promise<string> {
+    const data = await get<{command: string}>('/betsOverlay/bettingCommand?frameApiKey=' + key, 'json', {signal: abortController.signal});
+    return data.command;
+}
+
 export default function Frame({auth, testing}: Props): ReactElement | null {
     const [overlay, reload] = useAbortFetch(fetchOverlay, auth);
     const [user, reloadUser] = useAbortFetch(fetchUser, auth);
+    const [command, reloadCommand] = useAbortFetch(fetchBetCommand, auth);
     const [{betRound}] = useBetStateValue();
 
     const distribution = useMemo(() => {
@@ -37,6 +45,7 @@ export default function Frame({auth, testing}: Props): ReactElement | null {
             if(isOverlayMessage(message)) {
                 reload();
                 reloadUser();
+                reloadCommand();
                 setCacheKey(message.date);
             }
         }
@@ -45,7 +54,7 @@ export default function Frame({auth, testing}: Props): ReactElement | null {
     if(overlay && (betRound.status === 'betting' || testing)) {
         return <div key={cacheKey}>
             {overlay.fontFamily && <GoogleFontLoader fonts={[{font: overlay.fontFamily, weights: [overlay.fontVariant]}]} />}
-            <DistributionSlider overlay={overlay} distribution={distribution} delay={user && user.streamDelay} aBets={betRound.aBets} bBets={betRound.bBets} teamA={user.teamAName} teamB={user.teamBName}/>
+            <DistributionSlider overlay={overlay} distribution={distribution} delay={user && user.streamDelay} aBets={betRound.aBets} bBets={betRound.bBets} teamA={user.teamAName} teamB={user.teamBName} command={command}/>
             <style jsx global>{`
                 body, html {
                     margin: 0;
