@@ -18,6 +18,7 @@ export enum MessageType {
     gsi_game_winner = 'gsi_game_winner',
     gsi_game_win_chance = 'gsi_game_win_chance',
     statsoverlay = 'statsoverlay',
+    dota_wl_reset = 'dota_wl_reset'
 }
 
 export interface BaseMessage {
@@ -116,7 +117,12 @@ export interface StatsOverlayMessage extends BaseMessage {
     };
 }
 
-export type Message =  StatsOverlayMessage | GsiGameStateMessage | GsiGameDataMessage | ChatMessage | BettingMessage | GsiConnectedMessage | GsiRoshanMessage | GsiWinnerMessage | OverlayMessage | GsiPauseMessage;
+
+export interface DotaWLReset extends BaseMessage {
+    type: MessageType.dota_wl_reset;
+}
+
+export type Message =  DotaWLReset | StatsOverlayMessage | GsiGameStateMessage | GsiGameDataMessage | ChatMessage | BettingMessage | GsiConnectedMessage | GsiRoshanMessage | GsiWinnerMessage | OverlayMessage | GsiPauseMessage;
 
 export function isGsiRoshanMessage(msg: Message): msg is GsiRoshanMessage {
     return msg.type === MessageType.gsi_roshan;
@@ -148,6 +154,10 @@ export function isOverlayMessage(msg: Message): msg is OverlayMessage {
 
 export function isStatsOverlayMessage(msg: Message): msg is StatsOverlayMessage {
     return msg.type === MessageType.statsoverlay;
+}
+
+export function isDotaWLReset(msg: Message): msg is DotaWLReset {
+    return msg.type === MessageType.dota_wl_reset;
 }
 
 interface NewMessageAction {

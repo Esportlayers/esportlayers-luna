@@ -3,14 +3,14 @@ import { DotaStats as DotaStatsEntitiy, User } from "@streamdota/shared-types";
 import { useMessageListener } from "../websocket/MessageHandler";
 import { get } from "../../modules/Network";
 import { useAbortFetch } from "../../hooks/abortFetch";
-import { GameState, isOverlayMessage, isGsiWinnerMessage, isGsiConnectedMessage, isGsiGameStateMessage, isGsiGameDataMessage } from "../websocket/state";
+import { GameState, isOverlayMessage, isGsiWinnerMessage, isGsiConnectedMessage, isGsiGameStateMessage, isGsiGameDataMessage, isDotaWLReset } from "../websocket/state";
 import DotaOverlayFrame from "./DotaOverlayFrame";
 import dayjs from "dayjs";
 import { motion, AnimatePresence } from "framer-motion";
 
 
 export async function fetchStats(abortController: AbortController, apiKey: string): Promise<DotaStatsEntitiy[]> {
-    return (await get<DotaStatsEntitiy[]>('/user/dotaStats/' + apiKey, 'json', {signal: abortController.signal}));
+    return (await get<DotaStatsEntitiy[]>('/user/dotaStats?frameApiKey=' + apiKey, 'json', {signal: abortController.signal}));
 }
 
 export async function fetchUser(abortController: AbortController, apiKey: string): Promise<User> {
@@ -46,7 +46,7 @@ const variants = {
 export default function Overlay({frameKey, testing}: {frameKey: string; testing: boolean;}): ReactElement | null {
     const message = useMessageListener();
     const [cacheKey, setCacheKey] = useState(dayjs().unix());
-    const [status] = useAbortFetch(fetchStats, frameKey);
+    const [status, reloadStats] = useAbortFetch(fetchStats, frameKey);
     const [user] = useAbortFetch(fetchUser, frameKey);
     const [wins, setWins] = useState(0);
     const [lost, setLost] = useState(0);
@@ -94,6 +94,12 @@ export default function Overlay({frameKey, testing}: {frameKey: string; testing:
 
             if(isGsiGameDataMessage(message) && message.value) {
                 setActivityType(message.value.type);
+            }
+
+            if(isDotaWLReset(message)) {
+                setWins(0);
+                setLost(0);
+                reloadStats();
             }
         }
     }, [message])
