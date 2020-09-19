@@ -1,33 +1,20 @@
-import { BetRoundStats } from '@streamdota/shared-types';
+import { BetRoundData } from '../websocket/state';
 
 enum ACTIONS {
     UPDATE_BET_ROUND = 'UPDATE_BET_ROUND',
 }
 
-
 export interface State {
-    betRound: BetRoundStats | null;
+    betRound: BetRoundData | null;
 }
 
 export const initialState: State = {
-    betRound: {
-        betSeason: 0,
-        id: 0,
-        round: 0,
-        userId: 0,
-        status: 'finished',
-        created: 0,
-        result: '',
-        total: 0,
-        aBets: 0,
-        bBets: 0,
-        chatters: 0,
-    },
+    betRound: null,
 };
 
 interface UpdateBetRoundAction {
     type: typeof ACTIONS.UPDATE_BET_ROUND;
-    betRound: BetRoundStats;
+    betRound: BetRoundData;
 }
 
 export const reducer = (state: State, action: UpdateBetRoundAction) => {
@@ -41,7 +28,7 @@ export const reducer = (state: State, action: UpdateBetRoundAction) => {
     }
 };
 
-export function updateBetRound(betRound: BetRoundStats): UpdateBetRoundAction {
+export function updateBetRound(betRound: BetRoundData): UpdateBetRoundAction {
     return {
         betRound,
         type: ACTIONS.UPDATE_BET_ROUND,

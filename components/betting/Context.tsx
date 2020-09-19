@@ -1,37 +1,16 @@
 import React, { ReactElement, useEffect, createContext, useReducer, useContext, Dispatch } from 'react';
 import { useMessageListener } from '../websocket/MessageHandler';
-import { MessageType, initialState as initialWebsocketState, reducer as websocketReducer } from '../websocket/state';
+import { initialState as initialWebsocketState, reducer as websocketReducer, isBettingV2Message } from '../websocket/state';
 import ContextProvider from '../websocket/context';
 import getWebsocketUrl from '../../modules/Router';
 import { State, updateBetRound, initialState as initialBetState, reducer as betReducer } from './State';
-import { useAbortFetch } from '../../hooks/abortFetch';
-import { get } from '../../modules/Network';
-import { BetRoundStats } from '@streamdota/shared-types';
 
 export const BettingContext = createContext({});
 export const useBetStateValue = (): [State, Dispatch<{}>] => useContext(BettingContext) as  [State, Dispatch<{}>];
 
-export async function fetchBetRound(abortController: AbortController, key: string, season: number): Promise<BetRoundStats> {
-    return await get<BetRoundStats>(`/bets/current?frameApiKey=${key}`, 'json', {signal: abortController.signal});
-}
 
-
-export const BetRoundLoader = ({auth}) => {
-	const [, dispatch] = useBetStateValue();
-	const [betRound] = useAbortFetch(fetchBetRound, auth);
-
-	useEffect(() => {
-		if(betRound) {
-			dispatch(updateBetRound(betRound));
-		}
-	}, [betRound]);
-
-	return <></>;
-}
-
-export const BetContextProvider = ({reducer, initialState, children, auth}) => (
+export const BetContextProvider = ({reducer, initialState, children}) => (
     <BettingContext.Provider value={useReducer(reducer, initialState)}>
-		<BetRoundLoader auth={auth} />
         {children}
     </BettingContext.Provider>
 );
@@ -43,7 +22,7 @@ const BetStateUpdated = () => {
 
 	useEffect(
 		() => {
-			if (message && message.type === MessageType.betting) {
+			if (message && isBettingV2Message(message)) {
 				dispatch(updateBetRound(message.value));
 			}
 		},
@@ -57,7 +36,7 @@ export default function BetContext({ auth, children }: { auth?: string; children
 	if (auth) {
 		return (
 			<ContextProvider initialState={initialWebsocketState} reducer={websocketReducer} url={getWebsocketUrl()+'/bets/live/' + auth}>
-				<BetContextProvider initialState={initialBetState} reducer={betReducer} auth={auth}>
+				<BetContextProvider initialState={initialBetState} reducer={betReducer}>
 					<BetStateUpdated />
 					{children}
 				</BetContextProvider>

@@ -28,13 +28,13 @@ export default function Frame({auth, testing}: Props): ReactElement | null {
     const [{betRound}] = useBetStateValue();
 
     const distribution = useMemo(() => {
-        const {aBets, total} = betRound || {aBets: 1, total: 2};
+        const {teamACount, totalVotesCount} = betRound || {teamACount: 1, totalVotesCount: 2};
 
-        if(total === 0) {
+        if(totalVotesCount === 0) {
             return 50;
         }
         
-        return (aBets * 100) / total;
+        return (teamACount * 100) / totalVotesCount;
     }, [betRound]);
 
     const message = useMessageListener();
@@ -51,10 +51,10 @@ export default function Frame({auth, testing}: Props): ReactElement | null {
         }
     }, [message])
 
-    if(overlay && (betRound.status === 'betting' || testing)) {
+    if(overlay &&  betRound && (betRound.overlayVisible || testing)) {
         return <div key={cacheKey}>
             {overlay.fontFamily && <GoogleFontLoader fonts={[{font: overlay.fontFamily, weights: [overlay.fontVariant]}]} />}
-            <DistributionSlider overlay={overlay} distribution={distribution} delay={user && user.streamDelay} aBets={betRound.aBets} bBets={betRound.bBets} teamA={user.teamAName} teamB={user.teamBName} command={command}/>
+            <DistributionSlider overlay={overlay} distribution={distribution} delay={user && user.streamDelay} aBets={betRound.teamACount} bBets={betRound.teamBCount} teamA={user.teamAName} teamB={user.teamBName} command={command}/>
             <style jsx global>{`
                 body, html {
                     margin: 0;

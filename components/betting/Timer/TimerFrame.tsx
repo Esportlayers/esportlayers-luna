@@ -1,24 +1,23 @@
 import React, { ReactElement, useState, useEffect } from "react";
 import GoogleFontLoader from "react-google-font-loader";
 import dayjs from "dayjs";
-import { BetRoundStats, BetOverlay } from "@streamdota/shared-types";
+import { BetOverlay } from "@streamdota/shared-types";
 import { useBetStateValue } from "../Context";
 import { useInterval } from "../../../hooks/interval";
 import { useAbortFetch } from "../../../hooks/abortFetch";
 import { get } from "../../../modules/Network";
 import { getVariant } from "../../dotaStats/DotaOverlayFrame";
 import { useMessageListener } from "../../websocket/MessageHandler";
-import { isOverlayMessage } from "../../websocket/state";
+import { BetRoundData, isOverlayMessage } from "../../websocket/state";
 
 interface Props {
     auth: string;
     testing: boolean;
 }
 
-function calculateRemaining(currentBetRound: BetRoundStats, duration: number = 90): string {
-    if(currentBetRound?.status === 'betting') {
-        const finish = currentBetRound.created + duration;
-        const diff = finish - dayjs().unix();
+function calculateRemaining(currentBetRound: BetRoundData): string {
+    if(currentBetRound && currentBetRound.overlayVisible) {
+        const diff = currentBetRound.overlayVisibleUntil - dayjs().unix();
         if(diff > 0) {
             const min = Math.floor(diff / 60);
             let sec: number | string = diff % 60;
@@ -35,11 +34,11 @@ export async function fetchOverlay(abortController: AbortController, key: string
     return await get<BetOverlay>('/betsOverlay?frameApiKey=' + key, 'json', {signal: abortController.signal});
 }
 
-export default React.memo(function Frame({auth, testing}: Props): ReactElement | null {
+export default function Frame({auth, testing}: Props): ReactElement | null {
     const [overlay, reaload] = useAbortFetch(fetchOverlay, auth);
     const [{betRound}] = useBetStateValue();
-    const [timer, setTimer] = useState(calculateRemaining(betRound, overlay?.timerDuration));
-    useInterval(() => setTimer(calculateRemaining(betRound, overlay?.timerDuration)));
+    const [timer, setTimer] = useState(calculateRemaining(betRound));
+    useInterval(() => setTimer(calculateRemaining(betRound)));
     const message = useMessageListener();
     const [cacheKey, setCacheKey] = useState(dayjs().unix());
 
@@ -52,7 +51,7 @@ export default React.memo(function Frame({auth, testing}: Props): ReactElement |
         }
     }, [message])
 
-    if(overlay && (betRound.status === 'betting' || testing)) {
+    if(overlay && betRound && (betRound.overlayVisible || testing)) {
         return <div className={'wrapper'} key={cacheKey}>
             {overlay.fontFamily && <GoogleFontLoader fonts={[{font: overlay.fontFamily, weights: [overlay.fontVariant]}]} />}
     
@@ -85,4 +84,4 @@ export default React.memo(function Frame({auth, testing}: Props): ReactElement |
         </div>;
     }
     return null;
-});
+}

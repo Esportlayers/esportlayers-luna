@@ -18,7 +18,8 @@ export enum MessageType {
     gsi_game_winner = 'gsi_game_winner',
     gsi_game_win_chance = 'gsi_game_win_chance',
     statsoverlay = 'statsoverlay',
-    dota_wl_reset = 'dota_wl_reset'
+    dota_wl_reset = 'dota_wl_reset',
+    betting_v2 = 'betting_v2',
 }
 
 export interface BaseMessage {
@@ -117,12 +118,39 @@ export interface StatsOverlayMessage extends BaseMessage {
     };
 }
 
-
 export interface DotaWLReset extends BaseMessage {
     type: MessageType.dota_wl_reset;
 }
 
-export type Message =  DotaWLReset | StatsOverlayMessage | GsiGameStateMessage | GsiGameDataMessage | ChatMessage | BettingMessage | GsiConnectedMessage | GsiRoshanMessage | GsiWinnerMessage | OverlayMessage | GsiPauseMessage;
+export interface BetRoundData {
+    status: 'stream_delay' | 'betting' | 'game_running' | 'finished';
+    overlayVisibleUntil: number;
+    overlayVisible: boolean;
+    streamDelay: number;
+    votingStartingAt: number;
+    votingTimeRemaining: number;
+    votingPossibleUntil: number;
+    voteCreated: number;
+    totalVotesCount: number;
+    chatterCounts: number;
+    teamACount: number;
+    teamAVoters: string[];
+    teamBCount: number;
+    teamBVoters: string[];
+    allVoters: string[];
+    winner: null | string;
+    winnerAnnouncement: null | number;
+    announcedStart: boolean;
+    announcedVoteEnd: boolean;
+    announcedWinner: boolean;
+}
+
+export interface BettingV2Message extends BaseMessage {
+    type: MessageType.betting_v2;
+    value: BetRoundData;
+}
+
+export type Message = BettingV2Message | DotaWLReset | StatsOverlayMessage | GsiGameStateMessage | GsiGameDataMessage | ChatMessage | BettingMessage | GsiConnectedMessage | GsiRoshanMessage | GsiWinnerMessage | OverlayMessage | GsiPauseMessage;
 
 export function isGsiRoshanMessage(msg: Message): msg is GsiRoshanMessage {
     return msg.type === MessageType.gsi_roshan;
@@ -158,6 +186,10 @@ export function isStatsOverlayMessage(msg: Message): msg is StatsOverlayMessage 
 
 export function isDotaWLReset(msg: Message): msg is DotaWLReset {
     return msg.type === MessageType.dota_wl_reset;
+}
+
+export function isBettingV2Message(msg: Message): msg is BettingV2Message {
+    return msg.type === MessageType.betting_v2;
 }
 
 interface NewMessageAction {
