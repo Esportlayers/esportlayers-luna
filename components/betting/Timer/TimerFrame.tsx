@@ -51,7 +51,7 @@ export default function Frame({auth, testing}: Props): ReactElement | null {
         }
     }, [message])
 
-    if(overlay && betRound && (betRound.overlayVisible || testing)) {
+    if(overlay && ((betRound && betRound.overlayVisible) || testing)) {
         return <div className={'wrapper'} key={cacheKey}>
             {overlay.fontFamily && <GoogleFontLoader fonts={[{font: overlay.fontFamily, weights: [overlay.fontVariant]}]} />}
     
