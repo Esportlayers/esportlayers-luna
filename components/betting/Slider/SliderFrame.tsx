@@ -54,7 +54,7 @@ export default function Frame({auth, testing}: Props): ReactElement | null {
     if(overlay &&  ((betRound && betRound.overlayVisible) || testing)) {
         return <div key={cacheKey}>
             {overlay.fontFamily && <GoogleFontLoader fonts={[{font: overlay.fontFamily, weights: [overlay.fontVariant]}]} />}
-            <DistributionSlider overlay={overlay} distribution={distribution} delay={user && user.streamDelay} aBets={betRound.teamACount} bBets={betRound.teamBCount} teamA={user.teamAName} teamB={user.teamBName} command={command}/>
+            <DistributionSlider overlay={overlay} distribution={distribution} delay={user && user.streamDelay} aBets={betRound?.teamACount || 0} bBets={betRound?.teamBCount || 0} teamA={user.teamAName} teamB={user.teamBName} command={command}/>
             <style jsx global>{`
                 body, html {
                     margin: 0;
