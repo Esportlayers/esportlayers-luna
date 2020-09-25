@@ -25,7 +25,7 @@ export default function Overlay({testing, auth}: {testing: boolean; auth: string
     useEffect(() => {
         if(message) {
             if(isGsiRoshanMessage(message)) {
-                setRemaining(message.value.remaining);
+                setRemaining(message.value.respawnTime);
                 setState(message.value.state);
             }
             if (isGsiWinnerMessage(message) && message.value.winnerTeam !== 'none') {

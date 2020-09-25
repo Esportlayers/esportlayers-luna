@@ -59,7 +59,7 @@ export interface GsiRoshanMessage extends BaseMessage {
     type: MessageType.gsi_roshan;
     value: {
         state: 'alive' | 'respawn_base' | 'respawn_variable' | 'aegis';
-        remaining: number;
+        respawnTime: number;
     };
 }
 
