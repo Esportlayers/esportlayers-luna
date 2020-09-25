@@ -1,7 +1,6 @@
 import { ReactElement, useState, useEffect } from "react";
 import { useMessageListener } from "../../websocket/MessageHandler";
-import { isOverlayMessage, isGsiPausedMessage, isGsiWinnerMessage, isGsiRoshanMessage } from "../../websocket/state";
-import { useInterval } from "../../../hooks/interval";
+import { isOverlayMessage, isGsiWinnerMessage, isGsiRoshanMessage } from "../../websocket/state";
 import Timer from "./Timer";
 import dayjs from "dayjs";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,7 +17,6 @@ const variants = {
 export default function Overlay({testing, auth}: {testing: boolean; auth: string}): ReactElement | null {
     const message = useMessageListener();
     const [remaining, setRemaining] = useState(0);
-    const [paused, setPaused] = useState(false);
     const [state, setState] = useState<'alive' | 'respawn_base' | 'respawn_variable' | 'aegis'>('alive');
     const [cacheKey, setCacheKey] = useState(dayjs().unix());
 
@@ -32,18 +30,11 @@ export default function Overlay({testing, auth}: {testing: boolean; auth: string
                 setRemaining(0);
                 setState('alive');
             }
-            if(isGsiPausedMessage(message)) {
-                setPaused(message.value);
-            }
-            
             if(isOverlayMessage(message)) {
                 setCacheKey(message.date);
             }
         }
     }, [message]);
-
-    useInterval(() => !paused && remaining > 0 && setRemaining(remaining - 1));
-
 
     return <AnimatePresence>
         {((remaining > 0 || (state === 'respawn_base' && remaining === 0)) || testing) && <motion.div initial={'hidden'} animate={'visible'} exit={'hidden'} variants={variants}>
