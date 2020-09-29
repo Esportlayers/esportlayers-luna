@@ -106,16 +106,40 @@ export interface OverlayMessage extends BaseMessage {
     value: boolean;
 }
 
+export enum StatsOverlayMessages {
+    heroStats = 'heroStats',
+    playerCompareGraph = 'playerCompareGraph'
+}
+export interface BaseStatsOverlayMessage {
+    type: StatsOverlayMessages;
+}
+
+export interface HeroStatsOverlayValue extends BaseStatsOverlayMessage {
+    type: StatsOverlayMessages.heroStats;
+    heroId: number;
+    heroClass: string;
+    totalGamesCount: number;
+    matchCount: number;
+    matchWins: number;
+    banCount: number;
+}
+
+export interface PlayerCompareGraphValue extends BaseStatsOverlayMessage {
+    StatsOverlayMessages: StatsOverlayMessages.playerCompareGraph;
+    dataType: 'net_worth' | 'xpm' | 'gpm' | 'hero_damage' | 'runes_activated' | 'camps_stacked' | 'support_gold_spent'
+    data: Array<{absolute: number; percentage: number}>;
+}
+
 export interface StatsOverlayMessage extends BaseMessage {
     type: MessageType.statsoverlay;
-    value: {
-        heroId: number;
-        heroClass: string;
-        totalGamesCount: number;
-        matchCount: number;
-        matchWins: number;
-        banCount: number;
-    };
+    value: HeroStatsOverlayValue |PlayerCompareGraphValue;
+}
+
+export function isHeroStatsOverlayMessage(value: StatsOverlayMessage['value']): value is HeroStatsOverlayValue {
+    return value.type === StatsOverlayMessages.heroStats;
+}
+export function isPlayerCompareGraphMessage(value: StatsOverlayMessage['value']): value is PlayerCompareGraphValue {
+    return value.type === StatsOverlayMessages.playerCompareGraph;
 }
 
 export interface DotaWLReset extends BaseMessage {

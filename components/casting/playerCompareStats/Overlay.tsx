@@ -1,17 +1,17 @@
 import { ReactElement, useState, useEffect } from "react";
 import { useMessageListener } from "../../websocket/MessageHandler";
 import { motion, AnimatePresence } from "framer-motion";
-import { isHeroStatsOverlayMessage, isStatsOverlayMessage } from "../../websocket/state";
-import HeroStats from "./HeroStats";
+import { isPlayerCompareGraphMessage, isStatsOverlayMessage } from "../../websocket/state";
+import OverlayStats from "./OverlayStats";
 
 const variants = {
     hidden: {
         opacity: 0,
-        x: '100%'
+        y: -100
     },
     visible: {
         opacity: 1,
-        x: '0px'
+        y: 0
     }
 }
 
@@ -21,7 +21,7 @@ export default function Overlay({testing}: {testing: boolean}): ReactElement | n
     const [show, setShow] = useState(false);
 
     useEffect(() => {
-        if(message && isStatsOverlayMessage(message) && !show && isHeroStatsOverlayMessage(message.value) ) {
+        if(message && isStatsOverlayMessage(message) && !show && isPlayerCompareGraphMessage(message.value) ) {
             setData(message.value);   
             setShow(true);
 
@@ -34,7 +34,7 @@ export default function Overlay({testing}: {testing: boolean}): ReactElement | n
 
     return <AnimatePresence>
         {((show && data ) || testing) &&  <motion.div initial={'hidden'} animate={'visible'} exit={'hidden'} variants={variants} transition={{ type: "spring", stiffness: 300, damping: 30 }}>
-            <HeroStats {...data} />
+            <OverlayStats data={data}/>
         </motion.div>}
     </AnimatePresence>;
     
