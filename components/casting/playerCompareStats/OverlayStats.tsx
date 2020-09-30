@@ -7,7 +7,6 @@ interface Props {
 }
 
 export const typeNameMap = {
-    'net_worth': 'Net worth',
     'gpm': 'GPM',
     'xpm': 'XPM',
     'hero_damage': 'Hero Damage',
@@ -16,11 +15,23 @@ export const typeNameMap = {
     'support_gold_spent': 'Support Gold Spent'
 }
 
+export const iconNameMap = {
+    'gpm': 'GPM.svg',
+    'xpm': 'XPM.svg',
+    'hero_damage': 'hero_dmg.svg',
+    'runes_activated': 'runes.svg',
+    'camps_stacked': 'camps.svg',
+    'support_gold_spent': 'support_gold.svg'
+}
+
 export default function OverlayStats({data}: Props): ReactElement {
     return <div className={'container'}>
         <ValueBars data={data?.data || []} />
+        <div className={'typeContainer'}>
+            <img src={'/images/icons/' + iconNameMap[data?.dataType || 'gpm']} alt={data?.dataType} />
+        </div>
         <div className={'label'}>
-            {typeNameMap[data?.dataType || 'net_worth']}
+            {typeNameMap[data?.dataType || 'gpm']}
         </div>
 
         <style jsx>{`
@@ -38,11 +49,29 @@ export default function OverlayStats({data}: Props): ReactElement {
                 text-align: center;
                 left: 0;
                 right: 0;
-                top: 150px;
+                top: 210px;
                 font-size: 18px;
                 color: #FFF;
                 font-weight: bold;
             }   
+
+            .typeContainer {
+                position: absolute; 
+                top: 65px;
+                left: 50%;
+                height: 80px;
+                width: 200px;
+                transform: translateX(-50%);
+                padding: 40px 0;
+                display: flex;
+                justify-content: center;
+            }
+
+            .typeContainer img {
+                height: 100%;
+                object-fit: cover;
+            }
+
         `}</style>
     </div>;
 }
