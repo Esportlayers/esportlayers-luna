@@ -36,30 +36,29 @@ export default function HeroStats({matchCount = 0, matchWins = 0, totalGamesCoun
 
         <style jsx>{`
             .entry {
-                height: 50px;
-                padding: 5px 20px 5px 0;
+                height: 3rem;
+                padding: .5rem 1.2rem .5rem .5rem;
                 display: inline-flex;
                 align-items: center;
                 background: #FFF;
-                font-size: 14px;
+                font-size: 1rem;
                 box-shadow: -2px 2px 15px 0 rgba(0,0,0,0.2);
                 justify-self: flex-end;
             }    
 
             .avatar {
-                height: 40px;
-                width: auto;
+                height: 3rem;
                 object-fit: cover;
                 flex-shrink: 0;
-                margin-right: 20px;
-                width: 100px;
+                margin-right: 1.5rem;
+                width: 6rem;
             }
 
             .stats {
                 display: grid;
                 align-items: center;
                 grid-template-columns: max-content max-content max-content;
-                grid-column-gap: 20px;
+                grid-column-gap: 1.2rem;
                 flex-grow: 1;
             }
 

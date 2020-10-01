@@ -24,13 +24,14 @@ function RoshanTimer({auth, testing}: Props): ReactElement {
 
         <style global jsx>{`
             html, body {
-                height: 70px!important;
+                height: 4rem;
                 background-color: transparent;
                 font-family: Arial;
                 padding: 5px 0;
                 margin: 0;
                 display: flex;
                 justify-content: flex-end;
+                font-size: 16px;
             }    
         `}</style>
     </ContextProvider>;
