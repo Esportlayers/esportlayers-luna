@@ -32,6 +32,8 @@ function RoshanTimer({auth, testing}: Props): ReactElement {
                 display: flex;
                 justify-content: flex-end;
                 font-size: 28px;
+                max-width: 100%;
+                overflow: hidden;
             }    
         `}</style>
     </ContextProvider>;
