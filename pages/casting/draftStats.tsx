@@ -24,7 +24,7 @@ function RoshanTimer({auth, testing}: Props): ReactElement {
 
         <style global jsx>{`
             html, body {
-                height: 4rem;
+                height: 6rem;
                 background-color: transparent;
                 font-family: Arial;
                 padding: 5px 0;
@@ -34,6 +34,7 @@ function RoshanTimer({auth, testing}: Props): ReactElement {
                 font-size: 28px;
                 max-width: 100%;
                 overflow: hidden;
+                width: 100%;
             }    
         `}</style>
     </ContextProvider>;
