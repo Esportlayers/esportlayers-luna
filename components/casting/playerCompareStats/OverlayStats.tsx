@@ -1,3 +1,4 @@
+import { pixelsToPercent } from "framer-motion/types/render/dom/layout/scale-correction";
 import { ReactElement } from "react";
 import { PlayerCompareGraphValue } from "../../websocket/state";
 import ValueBars from "./ValueBars";
@@ -26,7 +27,7 @@ export const iconNameMap = {
 
 export default function OverlayStats({data}: Props): ReactElement {
     return <div className={'container'}>
-        <ValueBars data={data?.data || []} />
+        <ValueBars data={data?.data || [{absolute: 12354, percentage: 50}, {absolute: 43242, percentage: 23}, {absolute: 3, percentage: 10}]} />
         <div className={'typeContainer'}>
             <img src={'/images/icons/' + iconNameMap[data?.dataType || 'gpm']} alt={data?.dataType} />
         </div>

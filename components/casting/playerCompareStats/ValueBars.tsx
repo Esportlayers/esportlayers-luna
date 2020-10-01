@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+import {formatNumber} from 'accounting';
 
 interface Props {
     data: Array<{absolute: number; percentage: number}>;
@@ -9,7 +10,7 @@ export default function ValueBars({data}: Props): ReactElement {
     return <>
         {data.map(({absolute, percentage}, idx) => <div className={'bar bar-' + idx} key={idx}>
             <div className={'progress'} style={{height: percentage + '%'}} />
-            <div className={'absoluteValue'}>{absolute}</div>
+            <div className={'absoluteValue'}>{formatNumber(absolute, 0, ' ')}</div>
         </div>)}
 
         <style jsx>{`
@@ -68,6 +69,8 @@ export default function ValueBars({data}: Props): ReactElement {
                 margin-left: -24px;
                 width: 60px;
                 position: absolute;
+                font-size: 13px;
+                text-shadow: 1px 1px  #000;
             }
 
             .progress {

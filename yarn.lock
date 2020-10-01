@@ -1128,6 +1128,11 @@
   resolved "https://registry.yarnpkg.com/@streamdota/shared-types/-/shared-types-1.3.2.tgz#29c61bf9bdaaf4b1cbbb479adcf10fa9f51f7fbd"
   integrity sha512-jolevciuVhKw7dVCRBWu+/sdg1xIcQkEiLqZYdWZXwPxszIz1ojr/SAaK8JzNlESe4q0mUdAseLeI9dZR4jj9w==
 
+"@types/accounting@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@types/accounting/-/accounting-0.4.1.tgz#865d9f5694fd7c438fba34eb4bc82eec6f34cdd5"
+  integrity sha512-qIN2yvRFvTtUtzG3bs7NKnsqHCPwRIIZMvBNWxiyF4LfOBMhwbwmsefqOt1T7KfkvCgOOxWYVqvlnKKZARSHgg==
+
 "@types/classnames@^2.2.10":
   version "2.2.10"
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.10.tgz#cc658ca319b6355399efc1f5b9e818f1a24bf999"
@@ -1329,6 +1334,11 @@ abort-controller@3.0.0:
   integrity sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==
   dependencies:
     event-target-shim "^5.0.0"
+
+accounting@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/accounting/-/accounting-0.4.1.tgz#87dd4103eff7f4460f1e186f5c677ed6cf566883"
+  integrity sha1-h91BA+/39EYPHhhvXGd+1s9WaIM=
 
 acorn@^6.4.1:
   version "6.4.1"
