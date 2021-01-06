@@ -23,13 +23,20 @@ export default function Overlay({testing, auth}: {testing: boolean; auth: string
     useEffect(() => {
         if(message) {
             if(isGsiRoshanMessage(message)) {
-                setRemaining(message.value.respawnTime);
-                setState(message.value.state);
+                if(message.value) {
+                    setRemaining(message.value.respawnTime);
+                    setState(message.value.state);
+                } else  {
+                    setRemaining(0);
+                    setState('alive');
+                }
             }
-            if (isGsiWinnerMessage(message) && message.value.winnerTeam !== 'none') {
+
+            if (isGsiWinnerMessage(message) && message?.value?.winnerTeam !== 'none') {
                 setRemaining(0);
                 setState('alive');
             }
+
             if(isOverlayMessage(message)) {
                 setCacheKey(message.date);
             }
