@@ -293,10 +293,10 @@
     "@sentry/types" "5.29.2"
     tslib "^1.9.3"
 
-"@streamdota/shared-types@1.3.4":
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/@streamdota/shared-types/-/shared-types-1.3.4.tgz#521e157dda41fb7b1017071083366bcbfc9cf623"
-  integrity sha512-Z2ob2SYc0uzCpO6u/SmK4cn7HchN1PuB+jOlY1//PqNfiXrNrn4WminSnOrnXFbt5sQrO5GqmlloIi1gmHfAHw==
+"@streamdota/shared-types@1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@streamdota/shared-types/-/shared-types-1.4.0.tgz#87cf230980c0784b072a2cf98ec2a5414375f342"
+  integrity sha512-BDDW2dzNKmeck9+u5y9iP8v0p+CLoE7/lZaW6PvoAuYW5SN8s/n7vgppCBSaZTGO5l/CVDKDBIVkN6gCzLn/Lg==
 
 "@types/accounting@^0.4.1":
   version "0.4.1"
