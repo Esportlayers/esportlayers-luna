@@ -1,12 +1,12 @@
 import React, { ReactElement, useState, useEffect, useMemo } from "react";
 import { DotaStats as DotaStatsEntitiy, User } from "@streamdota/shared-types";
-import { useMessageListener } from "../websocket/MessageHandler";
 import { get } from "../../modules/Network";
 import { useAbortFetch } from "../../hooks/abortFetch";
-import { GameState, isOverlayMessage, isGsiWinnerMessage, isGsiConnectedMessage, isGsiGameStateMessage, isGsiGameDataMessage, isDotaWLReset } from "../websocket/state";
+import { GameState, isOverlayMessage, isGsiWinnerMessage, isGsiConnectedMessage, isGsiGameStateMessage, isGsiGameDataMessage, isDotaWLReset, GsiWinnerMessage, GsiGameDataMessage } from "../websocket/state";
 import DotaOverlayFrame from "./DotaOverlayFrame";
 import dayjs from "dayjs";
 import { motion, AnimatePresence } from "framer-motion";
+import { EventTypes, GsiActivityMessage, GsiConnectedMessage, GsiGameStateMessage, useTetherListener, useTetherMessageListener } from "@esportlayers/io";
 
 
 export async function fetchStats(abortController: AbortController, apiKey: string): Promise<DotaStatsEntitiy[]> {
@@ -44,7 +44,7 @@ const variants = {
 }
 
 export default function Overlay({frameKey, testing}: {frameKey: string; testing: boolean;}): ReactElement | null {
-    const message = useMessageListener();
+    const message = useTetherListener();
     const [cacheKey, setCacheKey] = useState(dayjs().unix());
     const [status, reloadStats] = useAbortFetch(fetchStats, frameKey);
     const [user] = useAbortFetch(fetchUser, frameKey);
@@ -71,31 +71,36 @@ export default function Overlay({frameKey, testing}: {frameKey: string; testing:
         }
     }, [status]);
 
+    const {value: winnerMessage} = useTetherMessageListener<GsiWinnerMessage>(EventTypes.gsi_game_winner) || {value: null};
+    const {value: isConnected} = useTetherMessageListener<GsiConnectedMessage>(EventTypes.gsi_connected) || {value: false};
+    const {value: gameStateMessageValue} = useTetherMessageListener<GsiGameStateMessage>(EventTypes.gsi_game_state) || {value: null};
+    const {value: activityMessage} = useTetherMessageListener<GsiActivityMessage>(EventTypes.gsi_game_activity) || {value: null};
+
+    useEffect(() => {
+        if(winnerMessage && winnerMessage.winnerTeam !== 'none') {
+            if(winnerMessage.isPlayingWin) {
+                setWins(wins + 1);
+            } else {
+                setLost(lost + 1);
+            }
+        }
+    }, [winnerMessage]);
+
+    useEffect(() => setConnected(isConnected), [isConnected]);
+    //@ts-ignore
+    useEffect(() => setGamestate(gameStateMessageValue), [gameStateMessageValue]);
+    useEffect(() => setActivityType(activityMessage), [activityMessage]);
+
     useEffect(() => {
         if(message) {
-            if(isGsiWinnerMessage(message) && message.value?.winnerTeam !== 'none') {
-                if(message.value.isPlayingWin) {
-                    setWins(wins + 1);
-                } else {
-                    setLost(lost + 1);
-                }
-            }
-            if(isGsiConnectedMessage(message)) {
-                setConnected(message.value);
-            }
-
-            if(isGsiGameStateMessage(message)) {
-                setGamestate(message.value);
-            }
-
+            //TODO
+            //@ts-ignore
             if(isOverlayMessage(message)) {
+                //@ts-ignore
                 setCacheKey(message.date);
             }
 
-            if(isGsiGameDataMessage(message) && message.value) {
-                setActivityType(message.value.type);
-            }
-
+            //@ts-ignore
             if(isDotaWLReset(message)) {
                 setWins(0);
                 setLost(0);

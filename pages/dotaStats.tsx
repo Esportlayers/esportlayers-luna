@@ -1,12 +1,7 @@
 import { ReactElement } from "react";
-import { initialState, reducer } from "../components/websocket/state";
 import getWebsocketUrl from "../modules/Router";
 import dynamic from "next/dynamic";
-
-const ContextProvider = dynamic(
-    () => import('../components/websocket/context'),
-    { ssr: false }
-);
+import Tether from "@esportlayers/io";
 
 const Overlay = dynamic(
     () => import('../components/dotaStats/Overlay'),
@@ -14,7 +9,7 @@ const Overlay = dynamic(
 );
 
 function DotaStats({auth, testing}: {auth: string, testing: boolean}): ReactElement {
-    return <ContextProvider initialState={initialState} reducer={reducer} url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
+    return <Tether url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
         <Overlay frameKey={auth} testing={testing}/>
 
         <style global jsx>{`
@@ -23,7 +18,7 @@ function DotaStats({auth, testing}: {auth: string, testing: boolean}): ReactElem
                 background-color: transparent;
             }    
         `}</style>
-    </ContextProvider>;
+    </Tether>;
 }
 
 DotaStats.getInitialProps = ({query: {auth, testing}}) => {
