@@ -16,7 +16,6 @@ function General({auth, testing}: {auth: string, testing: boolean}): ReactElemen
 
     if(user) {
         return <Tether url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
-            <div className={'previewImage'} />
             {!user.individualOverlayWLStats && <div className={'dotaWl'}>
                 <DotaStatsOverlay frameKey={auth} testing={testing}/>
             </div>}
@@ -53,18 +52,7 @@ function General({auth, testing}: {auth: string, testing: boolean}): ReactElemen
                     box-sizing: border-box;
                     position: absolute;
                     width: 100vw;
-                }   
-
-                .previewImage {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: url('/images/dotaPreview.png');
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                } 
+                }
             `}</style>
 
             <style jsx>{`
