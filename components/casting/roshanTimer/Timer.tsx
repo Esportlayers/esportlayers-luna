@@ -37,6 +37,7 @@ export default function Timer({auth, remaining, state}: Props): ReactElement | n
                 body, html {
                     margin: 0;
                     padding: 0;
+                    background-color: rgba(0, 0, 0, 0);
                 }
             `}</style>
 

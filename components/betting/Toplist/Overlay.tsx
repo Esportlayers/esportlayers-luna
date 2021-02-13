@@ -65,6 +65,7 @@ export default function Overlay({auth, season, testing}: Props): ReactElement | 
                 body, html {
                     margin: 0;
                     padding: 0;
+                    background-color: rgba(0, 0, 0, 0);
                 }
             `}</style>
         </>;

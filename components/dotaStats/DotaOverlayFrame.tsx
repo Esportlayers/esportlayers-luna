@@ -50,6 +50,7 @@ export default function DotaOverlayFrame({wins, loss, auth}: {wins: number; loss
                 body, html {
                     margin: 0;
                     padding: 0;
+                    background-color: rgba(0, 0, 0, 0);
                 }
             `}</style>
             <style jsx>{`
