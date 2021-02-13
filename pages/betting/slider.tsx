@@ -6,7 +6,7 @@ import { useAbortFetch } from "../../hooks/abortFetch";
 import { fetchUser } from "../../components/antiSnipe/Overlay";
 function Slider({auth, testing}: {auth: string; testing: boolean}): ReactElement {
     const [user] = useAbortFetch(fetchUser, auth);
-    if(user) {
+    if(user && Boolean(user.useVoteDistributionOverlay)) {
         return <Wisp url={getWebsocketUrl() + '/bets/live/' + auth}>
             <SliderFrame auth={auth} testing={testing} />
         </Wisp>;

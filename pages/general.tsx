@@ -16,29 +16,29 @@ function General({auth, testing}: {auth: string, testing: boolean}): ReactElemen
 
     if(user) {
         return <Tether url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
-            {!user.individualOverlayWLStats && <div className={'dotaWl'}>
+            {!user.individualOverlayWLStats && Boolean(user.useDotaStatsOverlay) && <div className={'dotaWl'}>
                 <DotaStatsOverlay frameKey={auth} testing={testing}/>
             </div>}
-            {!user.individualOverlayMinimap && <div className={'antiSnipe'}>
+            {!user.individualOverlayMinimap && Boolean(user.useMinimapOverlay) && <div className={'antiSnipe'}>
                 <div className={'antiSnipeContainer'}>
                     <div className={'antiSnipeOverlay'}>
                         <AntiSnipeOverlay frameKey={auth} testing={testing}/>
                     </div>
                 </div>
             </div>}
-{/*
-            {!user.individualOverlayRoshTimer && <RoshanTimerOverlay testing={testing} auth={auth}/>}
-            {!user.individualOverlayDraftStats && <DraftStatsOverlay testing={testing}/>}
-            {!user.individualOverlayVoteHeroStats && <HeroStatsOverlay testing={testing}/>}
-*/}
+
+            {false && !user.individualOverlayRoshTimer && Boolean(user.useRoshanTimerOverlay) && <RoshanTimerOverlay testing={testing} auth={auth}/>}
+            {false && !user.individualOverlayDraftStats && Boolean(user.useDraftStatsOverlay) && <DraftStatsOverlay testing={testing}/>}
+            {false && !user.individualOverlayVoteHeroStats && Boolean(user.useHeroStatsOverlay) && <HeroStatsOverlay testing={testing}/>}
+
             <Wisp url={getWebsocketUrl() + '/bets/live/' + auth}>
-                {!user.individualOverlayVoteToplist && <div className={'toplist'}><ToplistOverlay auth={auth} testing={testing} /></div>}
+                {!user.individualOverlayVoteToplist && Boolean(user.useVoteToplistOverlay) && <div className={'toplist'}><ToplistOverlay auth={auth} testing={testing} /></div>}
                 <div className={'voteHeader'}>
-                    {!user.individualOverlayVoteDistribution && <div className={'voteSlider'}>
+                    {!user.individualOverlayVoteDistribution && Boolean(user.useVoteDistributionOverlay) &&  <div className={'voteSlider'}>
                         <SliderOverlay auth={auth} testing={testing} />
                     </div>}
 
-                    {!user.individualOverlayVoteTimer && <div className={'timer'}>
+                    {!user.individualOverlayVoteTimer && Boolean(user.useVoteTimerOverlay) && <div className={'timer'}>
                         <TimerOverlay auth={auth} testing={testing} />
                     </div>}
                 </div>

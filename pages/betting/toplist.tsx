@@ -7,7 +7,7 @@ import { fetchUser } from "../../components/antiSnipe/Overlay";
 
 function Toplist({auth, testing}: {auth: string; testing: boolean}): ReactElement {
     const [user] = useAbortFetch(fetchUser, auth);
-    if(user) {
+    if(user && Boolean(user.useVoteToplistOverlay)) {
         return <Wisp url={getWebsocketUrl() + '/bets/live/' + auth}>
             <ToplistFrame auth={auth} testing={testing} />
         </Wisp>;

@@ -12,7 +12,7 @@ const Overlay = dynamic(
 
 function DotaStats({auth, testing}: {auth: string, testing: boolean}): ReactElement {
     const [user] = useAbortFetch(fetchUser, auth);
-    if(user) {
+    if(user && Boolean(user.useDotaStatsOverlay)) {
         return <Tether url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
             <Overlay frameKey={auth} testing={testing}/>
 

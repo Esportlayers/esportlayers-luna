@@ -1,17 +1,9 @@
 import { ReactElement } from "react";
-import dynamic from "next/dynamic";
 import getWebsocketUrl from "../../modules/Router";
-import { initialState, reducer } from "../../components/websocket/state";
-
-const ContextProvider = dynamic(
-    () => import('../../components/websocket/context'),
-    { ssr: false }
-);
-
-const Overlay = dynamic(
-    () => import('../../components/casting/draftStats/Overlay'),
-    { ssr: false }
-);
+import { useAbortFetch } from "../../hooks/abortFetch";
+import { fetchUser } from "../../components/antiSnipe/Overlay";
+import Tether from "@esportlayers/io";
+import Overlay from "../../components/casting/draftStats/Overlay";
 
 interface Props {
     auth: string;
@@ -19,25 +11,29 @@ interface Props {
 }
 
 function RoshanTimer({auth, testing}: Props): ReactElement {
-    return <ContextProvider initialState={initialState} reducer={reducer} url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
-        <Overlay testing={testing}/>
+    const [user] = useAbortFetch(fetchUser, auth);
+    if(user && Boolean(user.useRoshanTimerOverlay)) {
+        return <Tether url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
+            <Overlay testing={testing}/>
 
-        <style global jsx>{`
-            html, body {
-                height: 6rem;
-                background-color: transparent;
-                font-family: Arial;
-                padding: 5px 0;
-                margin: 0;
-                display: flex;
-                justify-content: flex-end;
-                font-size: 28px;
-                max-width: 100%;
-                overflow: hidden;
-                width: 100%;
-            }    
-        `}</style>
-    </ContextProvider>;
+            <style global jsx>{`
+                html, body {
+                    height: 6rem;
+                    background-color: transparent;
+                    font-family: Arial;
+                    padding: 5px 0;
+                    margin: 0;
+                    display: flex;
+                    justify-content: flex-end;
+                    font-size: 28px;
+                    max-width: 100%;
+                    overflow: hidden;
+                    width: 100%;
+                }    
+            `}</style>
+        </Tether>;
+    }
+    return null;
 }
 
 RoshanTimer.getInitialProps = ({query: {auth, testing}}) => {
