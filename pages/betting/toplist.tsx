@@ -1,16 +1,19 @@
 import { ReactElement } from "react";
-import dynamic from "next/dynamic";
 import ToplistFrame from "../../components/betting/Toplist/ToplistFrame";
-
-const BetContext = dynamic(
-    () => import('../../components/betting/Context'),
-    { ssr: false }
-);
+import { Wisp } from "@esportlayers/io";
+import getWebsocketUrl from "../../modules/Router";
+import { useAbortFetch } from "../../hooks/abortFetch";
+import { fetchUser } from "../../components/antiSnipe/Overlay";
 
 function Toplist({auth, testing}: {auth: string; testing: boolean}): ReactElement {
-    return <BetContext auth={auth}>
-        <ToplistFrame auth={auth} testing={testing} />
-    </BetContext>;
+    const [user] = useAbortFetch(fetchUser, auth);
+    if(user) {
+        return <Wisp url={getWebsocketUrl() + '/bets/live/' + auth}>
+            <ToplistFrame auth={auth} testing={testing} />
+        </Wisp>;
+    }
+
+    return null;
 }
 
 Toplist.getInitialProps = ({query: {auth, testing}}) => {

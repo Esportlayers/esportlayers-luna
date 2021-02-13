@@ -1,16 +1,18 @@
 import { ReactElement } from "react";
-import dynamic from "next/dynamic";
 import SliderFrame from "../../components/betting/Slider/SliderFrame";
-
-const BetContext = dynamic(
-    () => import('../../components/betting/Context'),
-    { ssr: false }
-);
-
+import { Wisp } from "@esportlayers/io";
+import getWebsocketUrl from "../../modules/Router";
+import { useAbortFetch } from "../../hooks/abortFetch";
+import { fetchUser } from "../../components/antiSnipe/Overlay";
 function Slider({auth, testing}: {auth: string; testing: boolean}): ReactElement {
-    return <BetContext auth={auth}>
-        <SliderFrame auth={auth} testing={testing} />
-    </BetContext>;
+    const [user] = useAbortFetch(fetchUser, auth);
+    if(user) {
+        return <Wisp url={getWebsocketUrl() + '/bets/live/' + auth}>
+            <SliderFrame auth={auth} testing={testing} />
+        </Wisp>;
+    }
+
+    return null;
 }
 
 Slider.getInitialProps = ({query: {auth, testing}}) => {

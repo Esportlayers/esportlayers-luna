@@ -13,8 +13,8 @@ export default function OverlayImage({frameApiKey}: {frameApiKey: string}): Reac
 
     if(cfg) {
         return <>
-            {cfg.type === 'normal' && <img className={'overlay'} src={'/images/minimap_full.png'} style={{opacity: cfg.opacity + '%'}} />}
-            {cfg.type === 'rounded' && <img className={'overlay'} src={'/images/minimap_rounded.png'} style={{opacity: cfg.opacity + '%'}}/>}
+            {cfg.type === 'normal' && <img className={'overlay'} src={'/images/minimap_full.png'} style={{opacity: cfg.opacity + '%'}} width={'100%'}/>}
+            {cfg.type === 'rounded' && <img className={'overlay'} src={'/images/minimap_rounded.png'} style={{opacity: cfg.opacity + '%'}}  width={'100%'}/>}
         </>;
     }
     return null;

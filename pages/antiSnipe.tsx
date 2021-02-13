@@ -1,31 +1,33 @@
 import { ReactElement } from "react";
-import { initialState, reducer } from "../components/websocket/state";
 import getWebsocketUrl from "../modules/Router";
-import dynamic from "next/dynamic";
-
-const ContextProvider = dynamic(
-    () => import('../components/websocket/context'),
-    { ssr: false }
-);
-
-const Overlay = dynamic(
-    () => import('../components/antiSnipe/Overlay'),
-    { ssr: false }
-);
+import Tether from "@esportlayers/io";
+import { useAbortFetch } from "../hooks/abortFetch";
+import { fetchUser } from "../components/dotaStats/Overlay";
+import Overlay from "../components/antiSnipe/Overlay";
 
 function AntiSnipe({auth, testing}: {auth: string, testing: boolean}): ReactElement {
-    return <ContextProvider initialState={initialState} reducer={reducer} url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
-        <Overlay frameKey={auth} testing={testing}/>
+    const [user] = useAbortFetch(fetchUser, auth);
+    if(user) {
+        return <Tether url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
+            <div className={'antiSnipe'}>
+                <Overlay frameKey={auth} testing={testing}/>
+            </div>
 
-        <style global jsx>{`
-            html, body {
-                height: 283!important;
-                padding-bottom: 3px;
-                background-color: transparent;
-                margin: 0;
-            }    
-        `}</style>
-    </ContextProvider>;
+            <style global jsx>{`
+                html, body {
+                    padding-bottom: 3px;
+                    background-color: transparent;
+                    margin: 0;
+                }
+
+                .antiSnipe {
+                    width: 283px;
+                }
+            `}</style>
+        </Tether>;
+    }
+
+    return null;
 }
 
 AntiSnipe.getInitialProps = ({query: {auth, testing}}) => {

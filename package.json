@@ -8,7 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@esportlayers/io": "^1.7.0",
+    "@esportlayers/io": "^1.7.1",
     "@esportlayers/morphling": "^1.2.2",
     "@sentry/apm": "^5.27.1",
     "@sentry/react": "^6.1.0",
