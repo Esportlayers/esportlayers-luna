@@ -102,14 +102,14 @@
   resolved "https://registry.yarnpkg.com/@emotion/memoize/-/memoize-0.7.4.tgz#19bf0f5af19149111c40d98bb0cf82119f5d9eeb"
   integrity sha512-Ja/Vfqe3HpuzRsG1oBtWTHk2PGZ7GR+2Vz5iYGelAw8dx32K0y7PjVuxK6z1nMpZOqAFsRUPCkK1YjJ56qJlgw==
 
-"@esportlayers/io@^1.6.1":
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@esportlayers/io/-/io-1.6.1.tgz#14c7159bbd7341802a8c705aaee20718d7f4be0d"
-  integrity sha512-CimBrQoqBYLVYp6AJD7XCsboOZsHQZBlag4AnZ/Noonah+0uUNRWPub469uBVLyozrP/WzBjME77Oi73zzRTBg==
+"@esportlayers/io@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@esportlayers/io/-/io-1.7.0.tgz#6f6a600a72d73957a07318a4a0bddba852ac3a47"
+  integrity sha512-rCU2/DWdGCCGw+ds4Pn7y72HDuvR7LZUy1scESZHUo+TVfWkYoJkWFIUv1GJ65IG58W9Ai7bFUWxl7xkheVTgg==
   dependencies:
     "@esportlayers/morphling" "^1.2.0"
 
-"@esportlayers/morphling@^1.2.0":
+"@esportlayers/morphling@^1.2.0", "@esportlayers/morphling@^1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@esportlayers/morphling/-/morphling-1.2.2.tgz#0df35145cc105a996d8355fd1125ddfd8ea568b1"
   integrity sha512-QYsw9oDGDdXa+Q6H2hZRMuOuEym1iHuV3D9GRnOmuDJbiawaGx9l5exRMkTYfZ8wgfpmRYyn0jsmWBQ2e3au1g==
@@ -309,10 +309,10 @@
     "@sentry/types" "6.1.0"
     tslib "^1.9.3"
 
-"@streamdota/shared-types@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@streamdota/shared-types/-/shared-types-1.4.0.tgz#87cf230980c0784b072a2cf98ec2a5414375f342"
-  integrity sha512-BDDW2dzNKmeck9+u5y9iP8v0p+CLoE7/lZaW6PvoAuYW5SN8s/n7vgppCBSaZTGO5l/CVDKDBIVkN6gCzLn/Lg==
+"@streamdota/shared-types@1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@streamdota/shared-types/-/shared-types-1.4.1.tgz#3a39f65d1ff2a36ca437562562dd00ce8db34789"
+  integrity sha512-I0ZJxcI3CCQqFGPJl0aWWgjy1PHyE0DXyT/1ka/z6J1V/cmuuRpPwHMNsvLTLRrQU1XKMNtSbZ9QcTLbkzCxcA==
 
 "@types/accounting@^0.4.1":
   version "0.4.1"
@@ -331,20 +331,20 @@
   dependencies:
     dotenv "*"
 
-"@types/node@^14.14.25":
-  version "14.14.25"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.25.tgz#15967a7b577ff81383f9b888aa6705d43fbbae93"
-  integrity sha512-EPpXLOVqDvisVxtlbvzfyqSsFeQxltFbluZNRndIb8tr9KiBnYNLzrc1N3pyKUCww2RNrfHDViqDWWE1LCJQtQ==
+"@types/node@^14.14.27":
+  version "14.14.27"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.27.tgz#c7127f8da0498993e13b1a42faf1303d3110d2f2"
+  integrity sha512-Ecfmo4YDQPwuqTCl1yBxLV5ihKfRlkBmzUEDcfIRvDxOTGQEeikr317Ln7Gcv0tjA8dVgKI3rniqW2G1OyKDng==
 
 "@types/prop-types@*":
   version "15.7.3"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
   integrity sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
 
-"@types/react@^17.0.1":
-  version "17.0.1"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.1.tgz#eb1f1407dea8da3bc741879c1192aa703ab9975b"
-  integrity sha512-w8t9f53B2ei4jeOqf/gxtc2Sswnc3LBK5s0DyJcg5xd10tMHXts2N31cKjWfH9IC/JvEPa/YF1U4YeP1t4R6HQ==
+"@types/react@^17.0.2":
+  version "17.0.2"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.2.tgz#3de24c4efef902dd9795a49c75f760cbe4f7a5a8"
+  integrity sha512-Xt40xQsrkdvjn1EyWe1Bc0dJLcil/9x2vAuW7ya+PuQip4UYUaXyhzWmAbwRsdMgwOFHpfp7/FFZebDU6Y8VHA==
   dependencies:
     "@types/prop-types" "*"
     csstype "^3.0.2"
@@ -620,9 +620,9 @@ bytes@3.1.0:
   integrity sha512-zauLjrfCG+xvoyaqLoV8bLVXXNGC4JqlxFCutSDWA6fJrTo2ZuvLYTqZ7aHBLZSMOopbzwv8f+wZcVzfVTI2Dg==
 
 caniuse-lite@^1.0.30001093, caniuse-lite@^1.0.30001173, caniuse-lite@^1.0.30001179:
-  version "1.0.30001185"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001185.tgz#3482a407d261da04393e2f0d61eefbc53be43b95"
-  integrity sha512-Fpi4kVNtNvJ15H0F6vwmXtb3tukv3Zg3qhKkOGUq7KJ1J6b9kf4dnNgtEAFXhRsJo0gNj9W60+wBvn0JcTvdTg==
+  version "1.0.30001187"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001187.tgz#5706942631f83baa5a0218b7dfa6ced29f845438"
+  integrity sha512-w7/EP1JRZ9552CyrThUnay2RkZ1DXxKe/Q2swTC4+LElLh9RRYrL1Z+27LlakB8kzY0fSmHw9mc7XYDUKAKWMA==
 
 chalk@2.4.2, chalk@^2.0.0, chalk@^2.4.2:
   version "2.4.2"
@@ -992,9 +992,9 @@ dotenv@*, dotenv@^8.2.0:
   integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
 
 electron-to-chromium@^1.3.634:
-  version "1.3.660"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.660.tgz#bfa8ce23735391cbd1c75c38f483e3179d0e0370"
-  integrity sha512-UOSKNfUBY8FDOSo4mfaUsN3KftlNLcYOg9v5apqLvNcWj+Ogy/i9SEDMZpfSVOeDkOcpu9iusucX6jxTWzqGLA==
+  version "1.3.664"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.664.tgz#8fb039e2fa8ef3ab2568308464a28425d4f6e2a3"
+  integrity sha512-yb8LrTQXQnh9yhnaIHLk6CYugF/An50T20+X0h++hjjhVfgSp1DGoMSYycF8/aD5eiqS4QwaNhiduFvK8rifRg==
 
 elliptic@^6.5.3:
   version "6.5.4"
@@ -2370,10 +2370,10 @@ type-fest@^0.7.1:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.7.1.tgz#8dda65feaf03ed78f0a3f9678f1869147f7c5c48"
   integrity sha512-Ne2YiiGN8bmrmJJEuTWTLJR32nh/JdL1+PSicowtNb0WFpn59GK8/lfD61bVtzguz7b3PBt74nxpv/Pw5po5Rg==
 
-typescript@^4.1.4:
-  version "4.1.4"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.1.4.tgz#f058636e2f4f83f94ddaae07b20fd5e14598432f"
-  integrity sha512-+Uru0t8qIRgjuCpiSPpfGuhHecMllk5Zsazj5LZvVsEStEjmIRRBZe+jHjGQvsgS7M1wONy2PQXd67EMyV6acg==
+typescript@^4.1.5:
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.1.5.tgz#123a3b214aaff3be32926f0d8f1f6e704eb89a72"
+  integrity sha512-6OSu9PTIzmn9TCDiovULTnET6BgXtDYL4Gg4szY+cGsc3JP1dQL8qvE8kShTRx1NIw4Q9IBHlwODjkjWEtMUyA==
 
 unfetch@^4.2.0:
   version "4.2.0"

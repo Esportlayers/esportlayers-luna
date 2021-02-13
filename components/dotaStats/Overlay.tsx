@@ -2,11 +2,11 @@ import React, { ReactElement, useState, useEffect, useMemo } from "react";
 import { DotaStats as DotaStatsEntitiy, User } from "@streamdota/shared-types";
 import { get } from "../../modules/Network";
 import { useAbortFetch } from "../../hooks/abortFetch";
-import { GameState, isOverlayMessage, isGsiWinnerMessage, isGsiConnectedMessage, isGsiGameStateMessage, isGsiGameDataMessage, isDotaWLReset, GsiWinnerMessage, GsiGameDataMessage } from "../websocket/state";
 import DotaOverlayFrame from "./DotaOverlayFrame";
 import dayjs from "dayjs";
 import { motion, AnimatePresence } from "framer-motion";
-import { EventTypes, GsiActivityMessage, GsiConnectedMessage, GsiGameStateMessage, useTetherListener, useTetherMessageListener } from "@esportlayers/io";
+import { DotaWLResetMessage, EventTypes, GsiActivityMessage, GsiConnectedMessage, GsiGameStateMessage, GsiGameWinnerMessage, OverlayMessage, useTetherMessageListener } from "@esportlayers/io";
+import { GameState } from "@esportlayers/morphling";
 
 
 export async function fetchStats(abortController: AbortController, apiKey: string): Promise<DotaStatsEntitiy[]> {
@@ -18,18 +18,18 @@ export async function fetchUser(abortController: AbortController, apiKey: string
 }
 
 const visibleGameStates = new Set([
-    GameState.DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD,
-    GameState.DOTA_GAMERULES_STATE_GAME_IN_PROGRESS,
-    GameState.DOTA_GAMERULES_STATE_PRE_GAME,
+    GameState.playersLoading,
+    GameState.running,
+    GameState.preGame,
 ]);
 
 const pickGameStates = new Set([
-    GameState.DOTA_GAMERULES_STATE_STRATEGY_TIME,
-    GameState.DOTA_GAMERULES_STATE_HERO_SELECTION,
+    GameState.strategyTime,
+    GameState.heroSelection,
 ]);
 
 const mainMenuGameState = new Set([
-    GameState.DOTA_GAMERULES_STATE_POST_GAME,
+    GameState.postGame,
 ]);
 
 const variants = {
@@ -44,7 +44,6 @@ const variants = {
 }
 
 export default function Overlay({frameKey, testing}: {frameKey: string; testing: boolean;}): ReactElement | null {
-    const message = useTetherListener();
     const [cacheKey, setCacheKey] = useState(dayjs().unix());
     const [status, reloadStats] = useAbortFetch(fetchStats, frameKey);
     const [user] = useAbortFetch(fetchUser, frameKey);
@@ -71,10 +70,12 @@ export default function Overlay({frameKey, testing}: {frameKey: string; testing:
         }
     }, [status]);
 
-    const {value: winnerMessage} = useTetherMessageListener<GsiWinnerMessage>(EventTypes.gsi_game_winner) || {value: null};
+    const {value: winnerMessage} = useTetherMessageListener<GsiGameWinnerMessage>(EventTypes.gsi_game_winner) || {value: null};
     const {value: isConnected} = useTetherMessageListener<GsiConnectedMessage>(EventTypes.gsi_connected) || {value: false};
     const {value: gameStateMessageValue} = useTetherMessageListener<GsiGameStateMessage>(EventTypes.gsi_game_state) || {value: null};
     const {value: activityMessage} = useTetherMessageListener<GsiActivityMessage>(EventTypes.gsi_game_activity) || {value: null};
+    const {date: lastOverlayMessage} = useTetherMessageListener<OverlayMessage>(EventTypes.overlay) || {date: null};
+    const {date: dotaWLReset} = useTetherMessageListener<DotaWLResetMessage>(EventTypes.dota_wl_reset) || {date: null};
 
     useEffect(() => {
         if(winnerMessage && winnerMessage.winnerTeam !== 'none') {
@@ -87,27 +88,17 @@ export default function Overlay({frameKey, testing}: {frameKey: string; testing:
     }, [winnerMessage]);
 
     useEffect(() => setConnected(isConnected), [isConnected]);
-    //@ts-ignore
     useEffect(() => setGamestate(gameStateMessageValue), [gameStateMessageValue]);
     useEffect(() => setActivityType(activityMessage), [activityMessage]);
-
+    useEffect(() => setCacheKey(lastOverlayMessage), [lastOverlayMessage]);
     useEffect(() => {
-        if(message) {
-            //TODO
-            //@ts-ignore
-            if(isOverlayMessage(message)) {
-                //@ts-ignore
-                setCacheKey(message.date);
-            }
-
-            //@ts-ignore
-            if(isDotaWLReset(message)) {
-                setWins(0);
-                setLost(0);
-                reloadStats();
-            }
+        if(dotaWLReset) {
+            setWins(0);
+            setLost(0);
+            reloadStats();
         }
-    }, [message])
+
+    }, [dotaWLReset]);
 
     const active = useMemo<boolean>(() => {
         return connected 
