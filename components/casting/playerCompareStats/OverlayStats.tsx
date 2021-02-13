@@ -1,6 +1,5 @@
-import { pixelsToPercent } from "framer-motion/types/render/dom/layout/scale-correction";
+import { PlayerCompareGraphValue } from "@esportlayers/io";
 import { ReactElement } from "react";
-import { PlayerCompareGraphValue } from "../../websocket/state";
 import ValueBars from "./ValueBars";
 
 interface Props {
