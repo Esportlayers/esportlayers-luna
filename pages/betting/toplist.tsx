@@ -1,19 +1,13 @@
 import { ReactElement } from "react";
-import ToplistFrame from "../../components/betting/Toplist/ToplistFrame";
-import { Wisp } from "@esportlayers/io";
-import getWebsocketUrl from "../../modules/Router";
-import { useAbortFetch } from "../../hooks/abortFetch";
-import { fetchUser } from "../../components/antiSnipe/Overlay";
+import dynamic from 'next/dynamic';
 
-function Toplist({auth, testing}: {auth: string; testing: boolean}): ReactElement {
-    const [user] = useAbortFetch(fetchUser, auth);
-    if(user && Boolean(user.useVoteToplistOverlay)) {
-        return <Wisp url={getWebsocketUrl() + '/bets/live/' + auth}>
-            <ToplistFrame auth={auth} testing={testing} />
-        </Wisp>;
-    }
+const ToplistPage = dynamic(
+    () => import('../../components/pages/voting/toplist'),
+    { ssr: false }
+);
 
-    return null;
+function Toplist(props): ReactElement {
+    return <ToplistPage {...props} />
 }
 
 Toplist.getInitialProps = ({query: {auth, testing}}) => {
