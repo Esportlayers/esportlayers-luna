@@ -15,14 +15,14 @@ export function getVariant(variant?: string): React.CSSProperties {
     return {};
 }
 
-function Number({color, cfg, children, right, dynamicNumbers}: {color: string, cfg: OverlayConfig, children: ReactNode, right?: boolean, dynamicNumbers: boolean}): ReactElement {
+function Number({color, cfg, children, right, dynamicNumbers, x}: {color: string, cfg: OverlayConfig, children: ReactNode, right?: boolean, dynamicNumbers: boolean, x: number}): ReactElement {
     return <div style={{
         color, 
         display: 'inline', 
         position: 'absolute', 
         top: '52%',
-        left: right ? '22%' : 'auto',
-        right: right ? 'auto' : '21%',
+        left: dynamicNumbers ? (right ? '22%' : 'auto') : (x + 'px'),
+        right: dynamicNumbers ? (right ? 'auto' : '21%') : (x + 'px'),
         fontSize: dynamicNumbers ? '2vw' : cfg.fontSize + 'px',
         fontFamily: cfg.font,
         transform: 'translateY(-50%)',
@@ -43,8 +43,8 @@ export default function DotaOverlayFrame({wins, loss, auth, dynamicNumbers}: {wi
             {cfg.font && cfg.font !== 'Arial' && <GoogleFontLoader fonts={[{font: cfg.font, weights: [cfg.variant]}]} />}
             <div className={'positionFrame ' + (!cfg.showBackground && 'noBg')}>
                 <div className={'container'}>
-                    <Number color={cfg.winColor} cfg={cfg} dynamicNumbers={dynamicNumbers}>{wins}</Number>
-                    <Number color={cfg.lossColor} cfg={cfg} right dynamicNumbers={dynamicNumbers}>{loss}</Number>
+                    <Number color={cfg.winColor} cfg={cfg} dynamicNumbers={dynamicNumbers} x={cfg.winX}>{wins}</Number>
+                    <Number color={cfg.lossColor} cfg={cfg} right dynamicNumbers={dynamicNumbers} x={cfg.lossX}>{loss}</Number>
                 </div>
             </div>
             <style jsx global>{`
