@@ -1,34 +1,17 @@
 import { ReactElement } from "react";
-import getWebsocketUrl from "../../modules/Router";
-import { useAbortFetch } from "../../hooks/abortFetch";
-import { fetchUser } from "../../components/antiSnipe/Overlay";
-import Tether from "@esportlayers/io";
-import Overlay from "../../components/casting/roshanTimer/Overlay";
+import dynamic from 'next/dynamic';
 
-interface Props {
-    auth: string;
-    testing: boolean;
-}
+const RoshanTimerPage = dynamic(
+    () => import('../../components/pages/casting/roshanTimer'),
+    { ssr: false }
+);
 
-function RoshanTimer({auth, testing}: Props): ReactElement {
-    const [user] = useAbortFetch(fetchUser, auth);
-    if(user && Boolean(user.useMinimapOverlay)) {
-        return <Tether url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
-            <Overlay testing={testing} auth={auth}/>
-
-            <style global jsx>{`
-                html, body {
-                    height: 60px!important;
-                    background-color: transparent;
-                }    
-            `}</style>
-        </Tether>;
-    }
-    return null;
+function RoshanTimer(props): ReactElement {
+    return <RoshanTimerPage {...props} />
 }
 
 RoshanTimer.getInitialProps = ({query: {auth, testing}}) => {
-    return {auth, testing};
+    return {auth, testing: Boolean(testing)};
 }
 
 export default RoshanTimer;
