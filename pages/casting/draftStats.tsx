@@ -12,7 +12,7 @@ interface Props {
 
 function RoshanTimer({auth, testing}: Props): ReactElement {
     const [user] = useAbortFetch(fetchUser, auth);
-    if(user && Boolean(user.useRoshanTimerOverlay)) {
+    if(user && Boolean(user.useDraftStatsOverlay)) {
         return <Tether url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
             <Overlay testing={testing}/>
 
