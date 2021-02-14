@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import dynamic from 'next/dynamic';
 
 const TimerPage = dynamic(
-    () => import('../../components/pages/voting/slider'),
+    () => import('../../components/pages/voting/timer'),
     { ssr: false }
 );
 
