@@ -15,7 +15,7 @@ export function getVariant(variant?: string): React.CSSProperties {
     return {};
 }
 
-function Number({color, cfg, children, right}: {color: string, cfg: OverlayConfig, children: ReactNode, right?: boolean}): ReactElement {
+function Number({color, cfg, children, right, dynamicNumbers}: {color: string, cfg: OverlayConfig, children: ReactNode, right?: boolean, dynamicNumbers: boolean}): ReactElement {
     return <div style={{
         color, 
         display: 'inline', 
@@ -23,7 +23,7 @@ function Number({color, cfg, children, right}: {color: string, cfg: OverlayConfi
         top: '52%',
         left: right ? '22%' : 'auto',
         right: right ? 'auto' : '21%',
-        fontSize: '2vw',
+        fontSize: dynamicNumbers ? '2vw' : cfg.fontSize + 'px',
         fontFamily: cfg.font,
         transform: 'translateY(-50%)',
         ...getVariant(cfg.variant),
@@ -35,7 +35,7 @@ export async function fetchDotaOverlay(abortController: AbortController, key: st
 }
 
 
-export default function DotaOverlayFrame({wins, loss, auth}: {wins: number; loss: number; auth: string}): ReactElement | null  {
+export default function DotaOverlayFrame({wins, loss, auth, dynamicNumbers}: {wins: number; loss: number; auth: string; dynamicNumbers: boolean}): ReactElement | null  {
     const [cfg] = useAbortFetch(fetchDotaOverlay, auth);
 
     if(cfg) {
@@ -43,8 +43,8 @@ export default function DotaOverlayFrame({wins, loss, auth}: {wins: number; loss
             {cfg.font && cfg.font !== 'Arial' && <GoogleFontLoader fonts={[{font: cfg.font, weights: [cfg.variant]}]} />}
             <div className={'positionFrame ' + (!cfg.showBackground && 'noBg')}>
                 <div className={'container'}>
-                    <Number color={cfg.winColor} cfg={cfg}>{wins}</Number>
-                    <Number color={cfg.lossColor} cfg={cfg} right>{loss}</Number>
+                    <Number color={cfg.winColor} cfg={cfg} dynamicNumbers={dynamicNumbers}>{wins}</Number>
+                    <Number color={cfg.lossColor} cfg={cfg} right dynamicNumbers={dynamicNumbers}>{loss}</Number>
                 </div>
             </div>
             <style jsx global>{`

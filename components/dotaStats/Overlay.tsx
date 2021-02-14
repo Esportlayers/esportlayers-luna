@@ -43,7 +43,7 @@ const variants = {
     }
 }
 
-export default function Overlay({frameKey, testing}: {frameKey: string; testing: boolean;}): ReactElement | null {
+export default function Overlay({frameKey, testing, dynamicNumbers}: {frameKey: string; testing: boolean; dynamicNumbers: boolean;}): ReactElement | null {
     const [cacheKey, setCacheKey] = useState(dayjs().unix());
     const [status, reloadStats] = useAbortFetch(fetchStats, frameKey);
     const [user] = useAbortFetch(fetchUser, frameKey);
@@ -111,7 +111,7 @@ export default function Overlay({frameKey, testing}: {frameKey: string; testing:
 
     return <AnimatePresence>
         {(active || testing) && <motion.div initial={'hidden'} animate={'visible'} exit={'hidden'} variants={variants} transition={{ duration: 2, type: "tween"}}>
-            <DotaOverlayFrame wins={wins} loss={lost} auth={frameKey} key={cacheKey} />
+            <DotaOverlayFrame wins={wins} loss={lost} auth={frameKey} key={cacheKey} dynamicNumbers={dynamicNumbers} />
         </motion.div>}
     </AnimatePresence>;
 }

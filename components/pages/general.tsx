@@ -17,7 +17,7 @@ export default function GeneralPage({auth, testing}: {auth: string, testing: boo
     if(user) {
         return <Tether url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
             {!user.individualOverlayWLStats && Boolean(user.useDotaStatsOverlay) && <div className={'dotaWl'}>
-                <DotaStatsOverlay frameKey={auth} testing={testing}/>
+                <DotaStatsOverlay frameKey={auth} testing={testing} dynamicNumbers/>
             </div>}
             {!user.individualOverlayMinimap && Boolean(user.useMinimapOverlay) && <div className={'antiSnipe'}>
                 <div className={'antiSnipeContainer'}>

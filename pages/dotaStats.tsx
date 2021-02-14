@@ -7,7 +7,7 @@ const DotaStatsPage = dynamic(
 );
 
 function DotaStats(props): ReactElement {
-    return <DotaStatsPage {...props} />
+    return <DotaStatsPage {...props} dynamicNumbers={false}/>
 }
 
 DotaStats.getInitialProps = ({query: {auth, testing}}) => {
