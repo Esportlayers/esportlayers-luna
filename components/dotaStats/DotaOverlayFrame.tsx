@@ -15,16 +15,17 @@ export function getVariant(variant?: string): React.CSSProperties {
     return {};
 }
 
-function Number({color, x, y, height, cfg, children}: {color: string, x: number, y:number, height: string, cfg: OverlayConfig, children: ReactNode}): ReactElement {
+function Number({color, cfg, children, right}: {color: string, cfg: OverlayConfig, children: ReactNode, right?: boolean}): ReactElement {
     return <div style={{
         color, 
         display: 'inline', 
         position: 'absolute', 
-        top: y + 'px',
-        left: x + 'px',
-        fontSize: cfg.fontSize + 'px',
-        lineHeight: height,
+        top: '52%',
+        left: right ? '22%' : 'auto',
+        right: right ? 'auto' : '21%',
+        fontSize: '2vw',
         fontFamily: cfg.font,
+        transform: 'translateY(-50%)',
         ...getVariant(cfg.variant),
     }}>{children}</div>
 }
@@ -42,8 +43,8 @@ export default function DotaOverlayFrame({wins, loss, auth}: {wins: number; loss
             {cfg.font && cfg.font !== 'Arial' && <GoogleFontLoader fonts={[{font: cfg.font, weights: [cfg.variant]}]} />}
             <div className={'positionFrame ' + (!cfg.showBackground && 'noBg')}>
                 <div className={'container'}>
-                    <Number color={cfg.winColor} cfg={cfg} x={cfg.winX} y={cfg.winY} height={'.9em'}>{wins}</Number>
-                    <Number color={cfg.lossColor} cfg={cfg} x={cfg.lossX} y={cfg.lossY} height={'.9em'}>{loss}</Number>
+                    <Number color={cfg.winColor} cfg={cfg}>{wins}</Number>
+                    <Number color={cfg.lossColor} cfg={cfg} right>{loss}</Number>
                 </div>
             </div>
             <style jsx global>{`
@@ -55,10 +56,8 @@ export default function DotaOverlayFrame({wins, loss, auth}: {wins: number; loss
             `}</style>
             <style jsx>{`
                 .positionFrame {
-                    width: 160px;
-                    background-image: url('/images/w-l-background.png');
-                    background-size: cover;
-                    height: 60px;
+                    padding-bottom: 37.5%;
+                    position: relative;
                 }
 
                 .noBg {
@@ -66,8 +65,13 @@ export default function DotaOverlayFrame({wins, loss, auth}: {wins: number; loss
                 }
 
                 .container {
-                    height: 58px;
-                    position: relative;
+                    background-image: url('/images/w-l-background.png');
+                    background-size: cover;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
                 }
             `}</style>
         </>;

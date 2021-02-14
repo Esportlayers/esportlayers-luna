@@ -5,7 +5,7 @@ import { get } from "../../../modules/Network";
 import { fetchOverlay } from "../Timer/TimerFrame";
 import Toplist from "./Toplist";
 import GoogleFontLoader from "react-google-font-loader";
-import { useBetStateValue } from "../Context";
+import { useVoteValue } from "@esportlayers/io";
 
 interface Props {
     auth: string;
@@ -44,7 +44,7 @@ export async function fetchToplist(abortController: AbortController, key: string
 export default function Overlay({auth, season, testing}: Props): ReactElement | null {
     const [overlay] = useAbortFetch(fetchOverlay, auth);
     const [toplist, reload] = useAbortFetch(fetchToplist, auth, season);
-    const [{betRound}] = useBetStateValue();
+    const [betRound] = useVoteValue();
     useEffect(() => {
         reload();
     }, [betRound]);

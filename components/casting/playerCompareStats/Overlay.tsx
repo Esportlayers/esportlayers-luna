@@ -1,8 +1,7 @@
 import { ReactElement, useState, useEffect } from "react";
-import { useMessageListener } from "../../websocket/MessageHandler";
 import { motion, AnimatePresence } from "framer-motion";
-import { isPlayerCompareGraphMessage, isStatsOverlayMessage } from "../../websocket/state";
 import OverlayStats from "./OverlayStats";
+import { EventTypes, isPlayerCompareGraphMessage, StatsOverlayMessage, useTetherMessageListener } from "@esportlayers/io";
 
 const variants = {
     hidden: {
@@ -16,13 +15,13 @@ const variants = {
 }
 
 export default function Overlay({testing}: {testing: boolean}): ReactElement | null {
-    const message = useMessageListener();
     const [data, setData] = useState(null);
     const [show, setShow] = useState(false);
+    const {value: heroStats} = useTetherMessageListener<StatsOverlayMessage>(EventTypes.statsoverlay) || {value: null};
 
     useEffect(() => {
-        if(message && isStatsOverlayMessage(message) && !show && isPlayerCompareGraphMessage(message.value) ) {
-            setData(message.value);   
+        if(!show && heroStats && isPlayerCompareGraphMessage(heroStats) ) {
+            setData(heroStats);   
             setShow(true);
 
             setTimeout(() => {
@@ -30,7 +29,7 @@ export default function Overlay({testing}: {testing: boolean}): ReactElement | n
                 setShow(false);
             }, 10000);
         }
-    }, [message]);
+    }, [heroStats]);
 
     return <AnimatePresence>
         {((show && data ) || testing) &&  <motion.div initial={'hidden'} animate={'visible'} exit={'hidden'} variants={variants} transition={{ type: "spring", stiffness: 300, damping: 30 }}>

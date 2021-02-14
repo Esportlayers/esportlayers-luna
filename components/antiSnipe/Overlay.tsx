@@ -1,12 +1,12 @@
 import React, { ReactElement, useState, useEffect, useMemo } from "react";
 import { DotaStats as DotaStatsEntitiy, User } from "@streamdota/shared-types";
-import { useMessageListener } from "../websocket/MessageHandler";
 import { get } from "../../modules/Network";
 import { useAbortFetch } from "../../hooks/abortFetch";
-import { GameState, isOverlayMessage, isGsiConnectedMessage, isGsiGameStateMessage, isGsiGameDataMessage } from "../websocket/state";
 import dayjs from "dayjs";
 import { motion, AnimatePresence } from "framer-motion";
 import OverlayImage from "./OverlayImage";
+import { EventTypes, GsiActivityMessage, GsiConnectedMessage, GsiGameStateMessage, OverlayMessage, useTetherMessageListener } from "@esportlayers/io";
+import { GameState } from "@esportlayers/morphling";
 
 
 export async function fetchStats(abortController: AbortController, apiKey: string): Promise<DotaStatsEntitiy[]> {
@@ -18,8 +18,8 @@ export async function fetchUser(abortController: AbortController, apiKey: string
 }
 
 const visibleGameStates = new Set([
-    GameState.DOTA_GAMERULES_STATE_GAME_IN_PROGRESS,
-    GameState.DOTA_GAMERULES_STATE_PRE_GAME,
+    GameState.running,
+    GameState.preGame,
 ]);
 
 const variants = {
@@ -32,7 +32,6 @@ const variants = {
 }
 
 export default function Overlay({frameKey, testing}: {frameKey: string; testing: boolean;}): ReactElement | null {
-    const message = useMessageListener();
     const [cacheKey, setCacheKey] = useState(dayjs().unix());
     const [user] = useAbortFetch(fetchUser, frameKey);
     const [connected, setConnected] = useState(false);
@@ -41,25 +40,16 @@ export default function Overlay({frameKey, testing}: {frameKey: string; testing:
 
     useEffect(() => setConnected(user && user.gsiActive), [user]);
 
-    useEffect(() => {
-        if(message) {
-            if(isGsiConnectedMessage(message)) {
-                setConnected(message.value);
-            }
+    const {value: isConnected} = useTetherMessageListener<GsiConnectedMessage>(EventTypes.gsi_connected) || {value: false};
+    const {value: gameStateMessageValue} = useTetherMessageListener<GsiGameStateMessage>(EventTypes.gsi_game_state) || {value: null};
+    const {value: activityMessage} = useTetherMessageListener<GsiActivityMessage>(EventTypes.gsi_game_activity) || {value: null};
+    const {date: lastOverlayMessage} = useTetherMessageListener<OverlayMessage>(EventTypes.overlay) || {date: null};
+    
+    useEffect(() => setConnected(isConnected), [isConnected]);
+    useEffect(() => setGamestate(gameStateMessageValue), [gameStateMessageValue]);
+    useEffect(() => setCacheKey(lastOverlayMessage), [lastOverlayMessage]);
+    useEffect(() => setActivityType(activityMessage), [activityMessage]);
 
-            if(isGsiGameStateMessage(message)) {
-                setGamestate(message.value);
-            }
-
-            if(isOverlayMessage(message)) {
-                setCacheKey(message.date);
-            }
-
-            if(isGsiGameDataMessage(message) && message.value) {
-                setActivityType(message.value.type);
-            }
-        }
-    }, [message])
 
     const active = useMemo<boolean>(() => {
         return connected 

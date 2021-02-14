@@ -1,17 +1,9 @@
 import { ReactElement } from "react";
-import dynamic from "next/dynamic";
 import getWebsocketUrl from "../../modules/Router";
-import { initialState, reducer } from "../../components/websocket/state";
-
-const ContextProvider = dynamic(
-    () => import('../../components/websocket/context'),
-    { ssr: false }
-);
-
-const Overlay = dynamic(
-    () => import('../../components/casting/roshanTimer/Overlay'),
-    { ssr: false }
-);
+import { useAbortFetch } from "../../hooks/abortFetch";
+import { fetchUser } from "../../components/antiSnipe/Overlay";
+import Tether from "@esportlayers/io";
+import Overlay from "../../components/casting/roshanTimer/Overlay";
 
 interface Props {
     auth: string;
@@ -19,16 +11,20 @@ interface Props {
 }
 
 function RoshanTimer({auth, testing}: Props): ReactElement {
-    return <ContextProvider initialState={initialState} reducer={reducer} url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
-        <Overlay testing={testing} auth={auth}/>
+    const [user] = useAbortFetch(fetchUser, auth);
+    if(user && Boolean(user.useMinimapOverlay)) {
+        return <Tether url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
+            <Overlay testing={testing} auth={auth}/>
 
-        <style global jsx>{`
-            html, body {
-                height: 60px!important;
-                background-color: transparent;
-            }    
-        `}</style>
-    </ContextProvider>;
+            <style global jsx>{`
+                html, body {
+                    height: 60px!important;
+                    background-color: transparent;
+                }    
+            `}</style>
+        </Tether>;
+    }
+    return null;
 }
 
 RoshanTimer.getInitialProps = ({query: {auth, testing}}) => {

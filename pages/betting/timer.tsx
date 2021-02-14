@@ -1,16 +1,18 @@
 import { ReactElement } from "react";
-import dynamic from "next/dynamic";
 import TimerFrame from "../../components/betting/Timer/TimerFrame";
-
-const BetContext = dynamic(
-    () => import('../../components/betting/Context'),
-    { ssr: false }
-);
-
+import { Wisp } from "@esportlayers/io";
+import getWebsocketUrl from "../../modules/Router";
+import { useAbortFetch } from "../../hooks/abortFetch";
+import { fetchUser } from "../../components/antiSnipe/Overlay";
 function Timer({auth, testing}: {auth: string; testing: boolean}): ReactElement {
-    return <BetContext auth={auth}>
-        <TimerFrame auth={auth} testing={testing}/>
-    </BetContext>;
+    const [user] = useAbortFetch(fetchUser, auth);
+    if(user && Boolean(user.useVoteTimerOverlay)) {
+        return <Wisp url={getWebsocketUrl() + '/bets/live/' + auth}>
+            <TimerFrame fullSize auth={auth} testing={testing}/>
+        </Wisp>;
+    }
+
+    return null;
 }
 
 Timer.getInitialProps = ({query: {auth, testing}}) => {
