@@ -22,7 +22,9 @@ class MyApp extends App<AppInitialProps> {
                 <meta name="msapplication-config" content="/shared/browserconfig.xml" />
                 <meta name="theme-color" content="#ffffff" />
             </Head>
-            <Component {...pageProps} />
+            <Sentry.ErrorBoundary fallback={"An error has occurred. This error was reported. Please try reloading the page!"}>
+                <Component {...pageProps} />
+            </Sentry.ErrorBoundary>
         </>;
 	}
 }
