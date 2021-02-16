@@ -60,10 +60,6 @@ export default function DotaOverlayFrame({wins, loss, auth, dynamicNumbers}: {wi
                     position: relative;
                 }
 
-                .noBg {
-                    background: none;
-                }
-
                 .container {
                     background-image: url('/images/w-l-background.png');
                     background-size: cover;
@@ -72,6 +68,10 @@ export default function DotaOverlayFrame({wins, loss, auth, dynamicNumbers}: {wi
                     left: 0;
                     right: 0;
                     bottom: 0;
+                }
+
+                .noBg .container {
+                    background-image: none;
                 }
             `}</style>
         </>;
