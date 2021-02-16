@@ -2,6 +2,6 @@ import { ReactElement } from "react";
 
 
 export default function Testpage(): ReactElement {
-    //@ts-ignore
-    return <button onClick={error}>Error</button>;
+    const a = () => new Error('test');
+    return <button onClick={a}>Error</button>;
 }
