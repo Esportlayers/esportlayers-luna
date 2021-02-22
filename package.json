@@ -8,17 +8,17 @@
     "start": "next start"
   },
   "dependencies": {
-    "@esportlayers/io": "^1.7.1",
-    "@esportlayers/morphling": "^1.2.2",
-    "@sentry/react": "^6.1.0",
-    "@streamdota/shared-types": "1.5.0",
+    "@esportlayers/io": "^1.7.2",
+    "@esportlayers/morphling": "^1.2.3",
+    "@sentry/react": "^6.2.0",
+    "@streamdota/shared-types": "1.5.1",
     "accounting": "^0.4.1",
     "classnames": "^2.2.6",
     "dayjs": "^1.10.4",
     "dotenv": "^8.2.0",
-    "framer-motion": "^3.3.0",
+    "framer-motion": "^3.6.7",
     "isomorphic-unfetch": "^3.1.0",
-    "next": "10.0.6",
+    "next": "10.0.7",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-google-font-loader": "^1.1.0",
@@ -28,7 +28,7 @@
     "@types/accounting": "^0.4.1",
     "@types/classnames": "^2.2.11",
     "@types/dotenv": "^8.2.0",
-    "@types/node": "^14.14.28",
+    "@types/node": "^14.14.31",
     "@types/react": "^17.0.2",
     "typescript": "^4.1.5"
   }
