@@ -26,6 +26,7 @@ export default function KeyWordListener({
             display: flex;
             align-items: flex-end;
             height: 100vh;
+            overflow: hidden;
           }
 
           * {
