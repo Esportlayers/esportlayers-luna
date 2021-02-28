@@ -25,9 +25,8 @@ export default function Overlay({
   const { value } = useTetherMessageListener<KeywordMessageOverlay>(
     EventTypes.keyword_message_overlay
   ) || { value: null };
-  const [data, setData] = useState<KeywordMessageOverlay["value"]>(null);
+  const [data, setData] = useState<KeywordMessageOverlay["value"]>();
   const [show, setShow] = useState(false);
-  console.log(value);
   useMemo(() => {
     if (value) {
       setShow(true);
@@ -36,7 +35,7 @@ export default function Overlay({
       setTimeout(() => {
         setShow(false);
         setData(null);
-      }, 20000);
+      }, 15000);
     }
   }, [value]);
 
