@@ -17,6 +17,26 @@ const variants = {
   },
 };
 
+function KeywordMessage({
+  message,
+  keyword,
+}: {
+  message: string;
+  keyword: string;
+}): ReactElement {
+  const highlighted = message.replaceAll(
+    new RegExp(keyword, "ig"),
+    `<span class='highlighted'>${keyword}</span>`
+  );
+  console.log(highlighted);
+
+  return (
+    <>
+      <span dangerouslySetInnerHTML={{ __html: highlighted }} />
+    </>
+  );
+}
+
 export default function Overlay({
   testing,
 }: {
@@ -56,7 +76,9 @@ export default function Overlay({
 
             <div className={"messageInfo"}>
               <div className={"user"}>@{data.name}</div>
-              <div className={"message"}>{data.message}</div>
+              <div className={"message"}>
+                <KeywordMessage message={data.message} keyword={data.keyword} />
+              </div>
             </div>
           </div>
 
@@ -91,6 +113,12 @@ export default function Overlay({
 
             .messageInfo {
               font-size: 25px;
+            }
+          `}</style>
+          <style jsx global>{`
+            .highlighted {
+              color: rgb(161, 33, 33);
+              font-weight: bold;
             }
           `}</style>
         </motion.div>
