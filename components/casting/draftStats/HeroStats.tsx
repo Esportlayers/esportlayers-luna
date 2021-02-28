@@ -1,78 +1,112 @@
-import React, { ReactElement } from "react";
-import HeroAvatar from "./HeroAvatar";
+import { ReactElement } from "react";
 
 interface Props {
-    heroClass?: string;
-    totalGamesCount?: number;
-    matchCount?: number;
-    matchWins?: number;
-    banCount?: number;
+  heroClass?: string;
+  totalGamesCount?: number;
+  matchCount?: number;
+  matchWins?: number;
+  banCount?: number;
 }
 
-export default function HeroStats({matchCount = 0, matchWins = 0, totalGamesCount = 0, banCount = 0, heroClass = 'zuus'}: Props): ReactElement {
-    const winRate = matchCount > 0 ? Math.floor(((matchWins) * 100) / matchCount) : 0;
-    const banRate = totalGamesCount > 0 ? Math.floor(((banCount || 0) * 100) / totalGamesCount) : 0;
-    const pickRate = totalGamesCount > 0 ? Math.floor((matchCount * 100) / totalGamesCount) : 0;
+export const baseUrl = "https://api.streamdota.com/static/heroes/vids/";
 
-    return <div className={'entry'}>
-        <div className={'avatar'}>
-            <HeroAvatar heroClass={heroClass} prefix={'h'} />
+export default function HeroStats({
+  matchCount = 0,
+  matchWins = 0,
+  totalGamesCount = 0,
+  banCount = 0,
+  heroClass = "zuus",
+}: Props): ReactElement {
+  const winRate =
+    matchCount > 0 ? Math.floor((matchWins * 100) / matchCount) : 0;
+  const banRate =
+    totalGamesCount > 0
+      ? Math.floor(((banCount || 0) * 100) / totalGamesCount)
+      : 0;
+  const pickRate =
+    totalGamesCount > 0 ? Math.floor((matchCount * 100) / totalGamesCount) : 0;
+
+  return (
+    <div className={"container"}>
+      <div className={"stats"}>
+        <div>
+          <div className={"value"}>{winRate}%</div>
+          <div className={"label"}>WINRATE</div>
+          <div className={"subLabel"}>
+            {matchWins}/{matchCount} Spiele
+          </div>
         </div>
-        <div className={'stats'}>
-            <div>
-                <div className={'value'}>{matchWins}/{matchCount} ({winRate}%)</div>
-                <div>WINRATE</div>
-            </div>
-            <div>
-                <div className={'value picks'}>{pickRate}%</div>
-                <div>PICKS</div>
-            </div>
-            <div>
-                <div className={'value bans'}>{banRate}%</div>
-                <div>BANS</div>
-            </div>
+        <div>
+          <div className={"value picks"}>{pickRate}%</div>
+          <div className={"label"}>PICKS</div>
         </div>
-            
+        <div>
+          <div className={"value bans"}>{banRate}%</div>
+          <div className={"label"}>BANS</div>
+        </div>
+      </div>
 
-        <style jsx>{`
-            .entry {
-                height: 3rem;
-                padding: .5rem 1.2rem .5rem .5rem;
-                display: inline-flex;
-                align-items: center;
-                background: #FFF;
-                font-size: 1rem;
-                box-shadow: -2px 2px 15px 0 rgba(0,0,0,0.2);
-                justify-self: flex-end;
-            }    
+      <div className={"videoContainer"}>
+        <video height={"200"} loop autoPlay muted playsInline>
+          <source
+            src={baseUrl + heroClass + "/300.mov"}
+            type="video/quicktime"
+          />
+          <source src={baseUrl + heroClass + "/300.webm"} type="video/webm" />
+        </video>
+      </div>
 
-            .avatar {
-                height: 3rem;
-                object-fit: cover;
-                flex-shrink: 0;
-                margin-right: 1.5rem;
-                width: 6rem;
-            }
-
-            .stats {
-                display: grid;
-                align-items: center;
-                grid-template-columns: max-content max-content max-content;
-                grid-column-gap: 1.2rem;
-                flex-grow: 1;
-            }
-
-            .value {
-                font-weight: bold;
-            }    
-
-            .picks {
-                color: #5DB93C;
-            }
-
-            .bans {
-                color: #D6342A;
-            }
-        `}</style>
-    </div>;
+      <style jsx>{`
+        .container {
+          background-color: #fff;
+          height: 290px;
+          width: 390px;
+          display: flex;
+          align-items: stretch;
+          padding: 1.5rem 2rem;
+          box-sizing: border-box;
+          justify-content: space-between;
+          box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .videoContainer {
+          display: flex;
+          align-items: center;
+          margin-left: -2rem;
+          max-width: 267px;
+        }
+        .stats {
+          width: 150px;
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: column;
+          font-family: "Arial";
+          font-weight: bold;
+          font-size: 18pt;
+          line-height: 18pt;
+          color: #00aefe;
+          text-align: center;
+          margin-left: -1.5rem;
+          padding-right: 1rem;
+        }
+        .label {
+          font-size: 14pt;
+          color: #777;
+          font-weight: normal;
+        }
+        .bans {
+          color: #cc1626;
+        }
+        .picks {
+          color: #51b30f;
+        }
+        .subLabel {
+          font-size: 12pt;
+          color: #888;
+          margin-top: -5pt;
+        }
+      `}</style>
+    </div>
+  );
 }
