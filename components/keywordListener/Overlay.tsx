@@ -24,7 +24,7 @@ function KeywordMessage({
   message: string;
   keyword: string;
 }): ReactElement {
-  const highlighted = message.replaceAll(
+  const highlighted = message.replace(
     new RegExp(keyword, "ig"),
     `<span class='highlighted'>${keyword}</span>`
   );
@@ -45,7 +45,13 @@ export default function Overlay({
   const { value } = useTetherMessageListener<KeywordMessageOverlay>(
     EventTypes.keyword_message_overlay
   ) || { value: null };
-  const [data, setData] = useState<KeywordMessageOverlay["value"]>();
+  const [data, setData] = useState<KeywordMessageOverlay["value"]>({
+    time: 0,
+    keyword: "#janistdumm",
+    message: "Warum ist das so? #janistdumm",
+    logo: "",
+    name: "hann3z",
+  });
   const [show, setShow] = useState(false);
   useMemo(() => {
     if (value) {
