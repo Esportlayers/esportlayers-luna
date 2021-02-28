@@ -47,10 +47,10 @@ export default function Overlay({
   ) || { value: null };
   const [data, setData] = useState<KeywordMessageOverlay["value"]>({
     time: 0,
-    keyword: "#janistdumm",
-    message: "Warum ist das so? #janistdumm",
-    logo: "",
-    name: "hann3z",
+    keyword: "#mykeyword",
+    message: "What is the keyword? #myKeyword",
+    logo: "https://avatars.githubusercontent.com/u/77932344",
+    name: "esportlayers",
   });
   const [show, setShow] = useState(false);
   useMemo(() => {
