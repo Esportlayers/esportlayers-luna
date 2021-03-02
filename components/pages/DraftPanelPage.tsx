@@ -1,31 +1,32 @@
-import Tether from "@esportlayers/io";
-import { ReactElement } from "react";
-import { useAbortFetch } from "../../hooks/abortFetch";
-import getWebsocketUrl from "../../modules/Router";
-import { fetchUser } from "../antiSnipe/Overlay";
 import Draft from "../draftPanel/Draft";
+import { ReactElement } from "react";
+import Tether from "@esportlayers/io";
+import { fetchUser } from "../dotaStats/Overlay";
+import getWebsocketUrl from "../../modules/Router";
+import { useAbortFetch } from "../../hooks/abortFetch";
 
 interface Props {
-    auth: string;
+  auth: string;
 }
 
-export default function DraftPanelPage({auth}: Props): ReactElement {
-    const [user] = useAbortFetch(fetchUser, auth);
+export default function DraftPanelPage({ auth }: Props): ReactElement {
+  const [user] = useAbortFetch(fetchUser, auth);
 
-    if(user) {
-        return <Tether url={getWebsocketUrl()+'/dota-gsi/live/' + auth}>
-            <div className={'draftPanel'}>
-                <div className={'teams'}>
-                    <div>Team Radiant</div>
-                    <div>Team Dire</div>
-                </div>
+  if (user) {
+    return (
+      <Tether url={getWebsocketUrl() + "/dota-gsi/live/" + auth}>
+        <div className={"draftPanel"}>
+          <div className={"teams"}>
+            <div>Team Radiant</div>
+            <div>Team Dire</div>
+          </div>
 
-                <div className={'draftGrid'}>
-                    <Draft />
-                </div>
-            </div>
+          <div className={"draftGrid"}>
+            <Draft />
+          </div>
+        </div>
 
-            <style jsx>{`
+        <style jsx>{`
                 .draftPanel {
                     position: fixed;
                     bottom 5vh;
@@ -56,17 +57,19 @@ export default function DraftPanelPage({auth}: Props): ReactElement {
                 }
             `}</style>
 
-            <style jsx global>{`
-                body, html {
-                    padding: 0;
-                    margin: 0;
-                }    
-                * {
-                    box-sizing: border-box;
-                }
-            `}</style>
-        </Tether>
-    }
+        <style jsx global>{`
+          body,
+          html {
+            padding: 0;
+            margin: 0;
+          }
+          * {
+            box-sizing: border-box;
+          }
+        `}</style>
+      </Tether>
+    );
+  }
 
-    return null;
+  return null;
 }

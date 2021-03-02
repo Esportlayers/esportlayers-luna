@@ -1,7 +1,7 @@
 import Overlay from "../../casting/draftStats/Overlay";
 import { ReactElement } from "react";
 import Tether from "@esportlayers/io";
-import { fetchUser } from "../../antiSnipe/Overlay";
+import { fetchUser } from "../../dotaStats/Overlay";
 import getWebsocketUrl from "../../../modules/Router";
 import { useAbortFetch } from "../../../hooks/abortFetch";
 

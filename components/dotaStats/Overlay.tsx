@@ -1,3 +1,5 @@
+import * as Sentry from "@sentry/react";
+
 import { AnimatePresence, motion } from "framer-motion";
 import DotaOverlayFrame, { fetchDotaOverlay } from "./DotaOverlayFrame";
 import { DotaStats as DotaStatsEntitiy, User } from "@streamdota/shared-types";
@@ -33,9 +35,24 @@ export async function fetchUser(
   abortController: AbortController,
   apiKey: string
 ): Promise<User> {
-  return await get<User>("/user/baseData?frameApiKey=" + apiKey, "json", {
+  const user = await get<User>("/user/baseData?frameApiKey=" + apiKey, "json", {
     signal: abortController.signal,
   });
+
+  if (
+    typeof window !== "undefined" &&
+    process.env.NODE_ENV === "production" &&
+    process.env.SENTRY_DSN &&
+    process.env.SENTRY_DSN.length > 0
+  ) {
+    Sentry.setUser({
+      id: `${user.id}`,
+      username: user.displayName,
+      twitchId: user.twitchId,
+    });
+  }
+
+  return user;
 }
 
 const visibleGameStates = new Set([
