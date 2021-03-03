@@ -8,7 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@esportlayers/io": "^1.7.3",
+    "@esportlayers/io": "^1.7.4",
     "@esportlayers/morphling": "^1.2.4",
     "@sentry/react": "^6.2.1",
     "@streamdota/shared-types": "1.5.3",
