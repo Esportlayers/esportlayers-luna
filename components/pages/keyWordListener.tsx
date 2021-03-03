@@ -13,7 +13,7 @@ export default function KeyWordListener({
   testing: boolean;
 }): ReactElement {
   const [user] = useAbortFetch(fetchUser, auth);
-  if (user) {
+  if (Boolean(user.useKeywordListenerOverlay)) {
     return (
       <Tether url={getWebsocketUrl() + "/dota-gsi/live/" + auth}>
         <Overlay testing={testing} />
