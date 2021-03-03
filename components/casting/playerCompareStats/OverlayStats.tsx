@@ -113,6 +113,8 @@ export default function OverlayStats({
         .container {
           height: 1080px;
           width: 1920px;
+          padding-top: 65px;
+          box-sizing: border-box;
         }
 
         .dropdownGrid {
