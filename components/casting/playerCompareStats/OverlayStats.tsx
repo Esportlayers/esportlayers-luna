@@ -118,7 +118,7 @@ export default function OverlayStats({
         }
 
         .dropdownGrid {
-          width: 44vw;
+          width: 43vw;
           background-color: #fff;
           height: 200px;
           margin: 0 auto;
@@ -182,6 +182,7 @@ export default function OverlayStats({
 
         .icon img {
           max-height: 100%;
+          max-width: 100%;
           height: auto;
           object-fit: contain;
         }
