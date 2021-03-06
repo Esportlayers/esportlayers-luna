@@ -4,11 +4,10 @@ import {
   useTetherMessageListener,
 } from "@esportlayers/io";
 
-import DraftInfo from "./DraftInfo";
 import { ReactElement } from "react";
-import TeamDraft from "./TeamDraft";
+import TeamBan from "./TeamBan";
 
-export default function Draft(): ReactElement | null {
+export default function Ban(): ReactElement | null {
   const { value: draft } = useTetherMessageListener<GsiDraftMessage>(
     EventTypes.gsi_draft
   ) || { value: null };
@@ -16,9 +15,9 @@ export default function Draft(): ReactElement | null {
   if (draft) {
     return (
       <>
-        <TeamDraft draft={draft.team2} />
-        <DraftInfo />
-        <TeamDraft draft={draft.team3} />
+        <TeamBan draft={draft.team2} />
+        <div />
+        <TeamBan draft={draft.team3} />
       </>
     );
   }

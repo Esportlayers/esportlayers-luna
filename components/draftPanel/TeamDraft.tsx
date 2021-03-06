@@ -1,83 +1,86 @@
-import { TeamDraftData } from "@esportlayers/morphling";
 import { ReactElement } from "react";
+import { TeamDraftData } from "@esportlayers/morphling";
 
 interface Props {
-    draft: TeamDraftData;
+  draft: TeamDraftData;
 }
 
-export const baseUrl = 'https://api.streamdota.com/static/heroes/vids/';
+export const baseUrl = "https://api.streamdota.com/static/heroes/vids/";
 
-export default function RadiantDraft({draft}: Props): ReactElement {
-    console.log(draft);
-    return <div className={'draftGrid'}>
-        <div className={'container'}>
-            <div className={'inner'} />
-            {draft?.pick0_id !== 0 && <video key={draft?.pick0_class} height={'150'} loop autoPlay muted playsInline>
-                <source src={baseUrl + draft?.pick0_class + '/300.mov'} type="video/quicktime" />
-                <source src={baseUrl + draft?.pick0_class + '/300.webm'} type="video/webm" />
-            </video>}
+const keys = [
+  "pick0_class",
+  "pick1_class",
+  "pick2_class",
+  "pick3_class",
+  "pick4_class",
+];
+
+export default function TeamDraft({ draft }: Props): ReactElement {
+  return (
+    <div className={"draftGrid"}>
+      {keys.map((key) => (
+        <div className={"container"} key={key}>
+          <div className={"inner"} />
+          {draft && draft[key] !== 0 && (
+            <video
+              key={draft[key]}
+              height={"150"}
+              loop
+              autoPlay
+              muted
+              playsInline
+            >
+              <source
+                src={baseUrl + draft[key] + "/300.mov"}
+                type="video/quicktime"
+              />
+              <source
+                src={baseUrl + draft[key] + "/300.webm"}
+                type="video/webm"
+              />
+            </video>
+          )}
+          <div className={"pedestal"} />
         </div>
+      ))}
 
-        <div className={'container'}>
-            <div className={'inner'} />
-            {draft?.pick1_id !== 0 && <video key={draft?.pick1_class} height={'150'} loop autoPlay muted playsInline>
-                <source src={baseUrl + draft?.pick1_class + '/300.mov'} type="video/quicktime" />
-                <source src={baseUrl + draft?.pick1_class + '/300.webm'} type="video/webm" />
-            </video>}
-        </div>
+      <style jsx>{`
+        .draftGrid {
+          display: grid;
+          grid-template-columns: 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
+          align-items: stretch;
+          grid-gap: 0.5rem;
+        }
 
-        <div className={'container'}>
-            <div className={'inner'} />
-            {draft?.pick2_id !== 0 && <video key={draft?.pick2_class} height={'150'} loop autoPlay muted playsInline>
-                <source src={baseUrl + draft?.pick2_class + '/300.mov'} type="video/quicktime" />
-                <source src={baseUrl + draft?.pick2_class + '/300.webm'} type="video/webm" />
-            </video>}
-        </div>
+        .container {
+          position: relative;
+        }
 
-        <div className={'container'}>
-            <div className={'inner'} />
-            {draft?.pick3_id !== 0 && <video key={draft?.pick3_class} height={'150'} loop autoPlay muted playsInline>
-                <source src={baseUrl + draft?.pick3_class + '/300.mov'} type="video/quicktime" />
-                <source src={baseUrl + draft?.pick3_class + '/300.webm'} type="video/webm" />
-            </video>}
-        </div>
+        .inner {
+          position: absolute;
+          top: 4vh;
+          bottom: 4vh;
+          left: 3.5vh;
+          right: 3.5vh;
+        }
 
-        <div className={'container'}>
-            <div className={'inner'} />
-            {draft?.pick4_id !== 0 && <video key={draft?.pick4_class} height={'150'} loop autoPlay muted playsInline>
-                <source src={baseUrl + draft?.pick4_class + '/300.mov'} type="video/quicktime" />
-                <source src={baseUrl + draft?.pick4_class + '/300.webm'} type="video/webm" />
-            </video>}
-        </div>
+        video {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          top: -20px;
+          z-index: 2;
+        }
 
-        <style jsx>{`
-            .draftGrid {
-                display: grid;
-                grid-template-columns: .2fr .2fr .2fr .2fr .2fr;
-                align-items: stretch;
-                grid-gap: .5rem;
-            }    
-
-            .container {
-                position: relative;
-            }
-
-            .inner {
-                position: absolute;
-                top: 4vh;
-                bottom: 4vh;
-                left: 3.5vh;
-                right: 3.5vh;
-                background-color: rgba(0,0,0,0.3);
-            }
-
-            video {
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-                top: 0;
-                z-index: 2;
-            }
-        `}</style>
+        .pedestal {
+          position: absolute;
+          bottom: -0.8rem;
+          left: 0.5rem;
+          right: 0.5rem;
+          height: 1rem;
+          background-color: #4c4c4c;
+        }
+      `}</style>
     </div>
+  );
 }
