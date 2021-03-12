@@ -61,7 +61,7 @@ export default function DraftPanelPage({ auth }: Props): ReactElement {
 
         <style jsx>{`
           .draftPanel {
-            margin: auto 5rem 5rem 5rem;
+            margin: -20rem 5rem 5rem 5rem;
             width: calc(100% - 10rem);
             height: 20rem;
             background: #fff;
@@ -70,6 +70,7 @@ export default function DraftPanelPage({ auth }: Props): ReactElement {
             display: flex;
             flex-direction: column;
             align-items: stretch;
+            transform: scale(0.5) translateY(-50rem);
           }
 
           .teams {

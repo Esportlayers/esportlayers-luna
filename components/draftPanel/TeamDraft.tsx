@@ -21,7 +21,7 @@ export default function TeamDraft({ draft }: Props): ReactElement {
       {keys.map((key) => (
         <div className={"container"} key={key}>
           <div className={"inner"} />
-          {draft && draft[key] !== 0 && (
+          {draft && draft[key] !== 0 && draft[key].length > 0 && (
             <video
               key={draft[key]}
               height={"150"}
