@@ -118,11 +118,13 @@ export default function OverlayStats({
         }
 
         .dropdownGrid {
-          width: 43vw;
-          background-color: #fff;
+          width: calc(43vw + 3rem);
+          padding: 0 1.5rem;
+          background-color: #171b1f;
           height: 200px;
           margin: 0 auto;
           display: grid;
+          box-sizing: border-box;
           grid-template-columns: repeat(5, 1fr) 200px repeat(5, 1fr);
           box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5);
         }
@@ -138,7 +140,7 @@ export default function OverlayStats({
         }
 
         .label {
-          color: #444;
+          color: #bbb;
           font-size: 14px;
           font-weight: bold;
           margin-top: 0.5rem;
@@ -157,7 +159,7 @@ export default function OverlayStats({
           right: 0;
           bottom: 0;
           background-color: #00aefe;
-          box-shadow: 0 0 5px rgba(0, 174, 254, 0.5);
+          box-shadow: 0 0 5px rgba(61, 194, 255, 0.5);
         }
 
         .typeBox {
@@ -192,6 +194,7 @@ export default function OverlayStats({
           font-weight: bold;
           flex: 0;
           margin-top: 1rem;
+          color: #fff;
           text-align: center;
         }
       `}</style>

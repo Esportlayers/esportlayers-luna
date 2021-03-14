@@ -58,7 +58,7 @@ export default function HeroStats({
 
       <style jsx>{`
         .container {
-          background-color: #fff;
+          background-color: #171b1f;
           height: 290px;
           width: 390px;
           display: flex;
@@ -92,7 +92,7 @@ export default function HeroStats({
         }
         .label {
           font-size: 14pt;
-          color: #777;
+          color: #ddd;
           font-weight: normal;
         }
         .bans {
@@ -103,7 +103,7 @@ export default function HeroStats({
         }
         .subLabel {
           font-size: 12pt;
-          color: #888;
+          color: #eee;
           margin-top: -5pt;
         }
       `}</style>
