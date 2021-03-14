@@ -1,6 +1,7 @@
+import Tether, { EventTypes } from "@esportlayers/io";
+
 import Overlay from "../keywordListener/Overlay";
 import { ReactElement } from "react";
-import Tether from "@esportlayers/io";
 import { fetchUser } from "../dotaStats/Overlay";
 import getWebsocketUrl from "../../modules/Router";
 import { useAbortFetch } from "../../hooks/abortFetch";
@@ -15,7 +16,10 @@ export default function KeyWordListener({
   const [user] = useAbortFetch(fetchUser, auth);
   if (Boolean(user?.useKeywordListenerOverlay)) {
     return (
-      <Tether url={getWebsocketUrl() + "/dota-gsi/live/" + auth}>
+      <Tether
+        url={getWebsocketUrl() + "/live/scoped/" + auth}
+        scopes={[EventTypes.keyword_message_overlay]}
+      >
         <Overlay testing={testing} />
 
         <style global jsx>{`

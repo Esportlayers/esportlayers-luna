@@ -1,6 +1,7 @@
+import Tether, { EventTypes } from "@esportlayers/io";
+
 import Overlay from "../antiSnipe/Overlay";
 import { ReactElement } from "react";
-import Tether from "@esportlayers/io";
 import { fetchUser } from "../dotaStats/Overlay";
 import getWebsocketUrl from "../../modules/Router";
 import { useAbortFetch } from "../../hooks/abortFetch";
@@ -15,7 +16,15 @@ export default function AntiSnipePage({
   const [user] = useAbortFetch(fetchUser, auth);
   if (user && Boolean(user.useMinimapOverlay)) {
     return (
-      <Tether url={getWebsocketUrl() + "/dota-gsi/live/" + auth}>
+      <Tether
+        url={getWebsocketUrl() + "/live/scoped/" + auth}
+        scopes={[
+          EventTypes.gsi_connected,
+          EventTypes.gsi_game_state,
+          EventTypes.gsi_game_activity,
+          EventTypes.overlay,
+        ]}
+      >
         <div className={"antiSnipe"}>
           <Overlay frameKey={auth} testing={testing} />
         </div>

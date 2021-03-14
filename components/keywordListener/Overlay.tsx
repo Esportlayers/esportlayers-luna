@@ -97,11 +97,12 @@ export default function Overlay({
               border-radius: 1rem;
               display: flex;
               align-items: center;
-              background-color: #fff;
+              background-color: #171b1f;
+              color: #fff;
             }
 
             .avatar {
-              background-color: #ccc;
+              background-color: #000;
               border-radius: 0.5rem;
               overflow: hidden;
               margin-right: 3rem;
@@ -123,7 +124,7 @@ export default function Overlay({
           `}</style>
           <style jsx global>{`
             .highlighted {
-              color: rgb(161, 33, 33);
+              color: rgb(172, 81, 247);
               font-weight: bold;
             }
           `}</style>

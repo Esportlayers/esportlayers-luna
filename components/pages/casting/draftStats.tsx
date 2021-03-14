@@ -1,6 +1,7 @@
+import Tether, { EventTypes } from "@esportlayers/io";
+
 import Overlay from "../../casting/draftStats/Overlay";
 import { ReactElement } from "react";
-import Tether from "@esportlayers/io";
 import { fetchUser } from "../../dotaStats/Overlay";
 import getWebsocketUrl from "../../../modules/Router";
 import { useAbortFetch } from "../../../hooks/abortFetch";
@@ -14,7 +15,10 @@ export default function DraftStatsPage({ auth, testing }: Props): ReactElement {
   const [user] = useAbortFetch(fetchUser, auth);
   if (user && Boolean(user.useDraftStatsOverlay)) {
     return (
-      <Tether url={getWebsocketUrl() + "/dota-gsi/live/" + auth}>
+      <Tether
+        url={getWebsocketUrl() + "/live/scoped/" + auth}
+        scopes={[EventTypes.statsoverlay]}
+      >
         <Overlay testing={testing} />
 
         <style global jsx>{`
