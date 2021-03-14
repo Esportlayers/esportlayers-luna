@@ -17,7 +17,7 @@ export default function TeamHeader({
   return (
     <div className={classNames("team", { dire })}>
       <div className={"teamLogoWrapper"}>
-        <img src={logo} alt={"IVY Logo"} className={"teamLogo"} />
+        <img src={logo} alt={"Team Logo"} className={"teamLogo"} />
       </div>
       <div className={"teamName"}>{name}</div>
       <div className={"teamTwitter"}>{twitter}</div>

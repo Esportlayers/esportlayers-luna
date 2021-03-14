@@ -25,7 +25,6 @@ export default function DraftInfo({ matchDetails }: Props): ReactElement {
     EventTypes.gsi_draft
   ) || { value: null };
 
-  console.log(draft);
   if (draft) {
     const isRadiantTurn = draft.activeteam === 2;
     const reserveTime = isRadiantTurn

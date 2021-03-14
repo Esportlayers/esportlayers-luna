@@ -28,7 +28,6 @@ function KeywordMessage({
     new RegExp(keyword, "ig"),
     `<span class='highlighted'>${keyword}</span>`
   );
-  console.log(highlighted);
 
   return (
     <>
