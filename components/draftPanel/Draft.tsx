@@ -5,10 +5,15 @@ import {
 } from "@esportlayers/io";
 
 import DraftInfo from "./DraftInfo";
+import { MatchDetails } from "./Panel";
 import { ReactElement } from "react";
 import TeamDraft from "./TeamDraft";
 
-export default function Draft(): ReactElement | null {
+interface Props {
+  matchDetails: MatchDetails;
+}
+
+export default function Draft({ matchDetails }: Props): ReactElement | null {
   const { value: draft } = useTetherMessageListener<GsiDraftMessage>(
     EventTypes.gsi_draft
   ) || { value: null };
@@ -17,7 +22,7 @@ export default function Draft(): ReactElement | null {
     return (
       <>
         <TeamDraft draft={draft.team2} />
-        <DraftInfo />
+        <DraftInfo matchDetails={matchDetails} />
         <TeamDraft draft={draft.team3} />
       </>
     );

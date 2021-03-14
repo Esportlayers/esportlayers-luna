@@ -4,6 +4,7 @@ import {
   useTetherMessageListener,
 } from "@esportlayers/io";
 
+import { MatchDetails } from "./Panel";
 import { ReactElement } from "react";
 import classNames from "classnames";
 
@@ -15,7 +16,11 @@ function toReadableTime(time: number): string {
   return `${minutes}:${seconds}`;
 }
 
-export default function DraftInfo(): ReactElement {
+interface Props {
+  matchDetails: MatchDetails;
+}
+
+export default function DraftInfo({ matchDetails }: Props): ReactElement {
   const { value: draft } = useTetherMessageListener<GsiDraftMessage>(
     EventTypes.gsi_draft
   ) || { value: null };
@@ -29,12 +34,19 @@ export default function DraftInfo(): ReactElement {
 
     return (
       <div className={"info"}>
-        <div className={"teamRadiantStats"}>1</div>
-        <div className={"teamDireStats"}>0</div>
+        <div className={"teamRadiantStats"}>
+          {matchDetails?.radiant?.wins || 0}
+        </div>
+        <div className={"teamDireStats"}>{matchDetails?.dire?.wins || 0}</div>
 
         <div className={"headerStats"}>
-          <div className={"type"}>Best of 3</div>
-          <div className={"stats"}>Game 2</div>
+          <div className={"type"}>Best of {matchDetails?.seriesType || 1}</div>
+          <div className={"stats"}>
+            Game{" "}
+            {1 +
+              (matchDetails?.radiant?.wins || 0) +
+              (matchDetails?.dire?.wins || 0)}
+          </div>
         </div>
 
         <div
